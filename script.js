@@ -1,5 +1,5 @@
 /* =============================================
-   SAPNA'S BIRTHDAY WEBSITE - JAVASCRIPT
+   Mummy'S BIRTHDAY WEBSITE - JAVASCRIPT
    ============================================= */
 
 // ===== POLYFILL: roundRect for older browsers =====
