@@ -819,11 +819,7 @@ function nextColor(sceneIdx) {
   const p = scenePalettes[sceneIdx % scenePalettes.length];
   return p[(colorIndex++) % p.length];
 }
-  ctx.fillStyle = nextColor(currentSceneIdx); ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = '#111'; ctx.fillStyle = '#111';
-  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  ctx.setLineDash([]);
-}
+
 
 // Shared micro-detail helpers
 function doodleHatch(ctx, x, y, w, h, gap=8, angle=Math.PI/4) {
