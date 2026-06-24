@@ -669,1245 +669,735 @@ function drawCatScene() {
 }
 
 function drawHiddenCat(ctx, cx, cy, cr) {
-  // Cat drawn in PURE BLACK & WHITE ink style — white fill, black strokes only
-  // exactly like the rest of the doodle scene so it camouflages properly
   ctx.save();
-  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-
-  // Body
-  ctx.fillStyle = '#ffffff';
-  ctx.strokeStyle = '#111';
-  ctx.lineWidth = cr * 0.09;
+  // Calico cat - white base with distinct patches to prevent perfect invisibility
+  const bodyColor = '#ffffff'; 
+  const orangePatch = '#ff9f43';
+  const blackPatch = '#2f3640';
+  const outlineColor = '#1e272e';
+  
+  // Subtle shadow to separate from background
+  ctx.shadowColor = 'rgba(0,0,0,0.3)';
+  ctx.shadowBlur = cr * 0.15;
+  ctx.shadowOffsetY = cr * 0.05;
+  
+  // Body (oval)
   ctx.beginPath();
-  ctx.ellipse(cx, cy + cr * 0.45, cr * 0.72, cr * 0.58, 0, 0, Math.PI * 2);
-  ctx.fill(); ctx.stroke();
+  ctx.ellipse(cx, cy + cr * 0.4, cr * 0.7, cr * 0.55, 0, 0, Math.PI * 2);
+  ctx.fillStyle = bodyColor;
+  ctx.fill();
+  ctx.shadowColor = 'transparent'; // only shadow on the base shape
+  
+  // Body Patches
+  ctx.fillStyle = orangePatch;
+  ctx.beginPath(); ctx.ellipse(cx - cr * 0.3, cy + cr * 0.3, cr * 0.25, cr * 0.3, -0.2, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = blackPatch;
+  ctx.beginPath(); ctx.ellipse(cx + cr * 0.4, cy + cr * 0.5, cr * 0.2, cr * 0.25, 0.4, 0, Math.PI * 2); ctx.fill();
+
+  ctx.strokeStyle = outlineColor;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + cr * 0.4, cr * 0.7, cr * 0.55, 0, 0, Math.PI * 2);
+  ctx.stroke();
 
   // Head
+  ctx.shadowColor = 'rgba(0,0,0,0.2)';
   ctx.beginPath();
-  ctx.ellipse(cx, cy - cr * 0.08, cr * 0.52, cr * 0.5, 0, 0, Math.PI * 2);
+  ctx.ellipse(cx, cy - cr * 0.1, cr * 0.5, cr * 0.48, 0, 0, Math.PI * 2);
+  ctx.fillStyle = bodyColor;
+  ctx.fill();
+  ctx.shadowColor = 'transparent';
+
+  // Head patches
+  ctx.fillStyle = orangePatch;
+  ctx.beginPath(); ctx.ellipse(cx - cr * 0.2, cy - cr * 0.3, cr * 0.18, cr * 0.18, 0, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = blackPatch;
+  ctx.beginPath(); ctx.ellipse(cx + cr * 0.25, cy - cr * 0.2, cr * 0.15, cr * 0.18, 0, 0, Math.PI*2); ctx.fill();
+
+  ctx.strokeStyle = outlineColor;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy - cr * 0.1, cr * 0.5, cr * 0.48, 0, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Ears
+  ctx.strokeStyle = outlineColor;
+  ctx.lineWidth = 1.5;
+  // Left ear (orange)
+  ctx.fillStyle = orangePatch;
+  ctx.beginPath();
+  ctx.moveTo(cx - cr * 0.35, cy - cr * 0.45);
+  ctx.lineTo(cx - cr * 0.52, cy - cr * 0.9);
+  ctx.lineTo(cx - cr * 0.15, cy - cr * 0.5);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  // Right ear (black)
+  ctx.fillStyle = blackPatch;
+  ctx.beginPath();
+  ctx.moveTo(cx + cr * 0.35, cy - cr * 0.45);
+  ctx.lineTo(cx + cr * 0.52, cy - cr * 0.9);
+  ctx.lineTo(cx + cr * 0.15, cy - cr * 0.5);
+  ctx.closePath();
   ctx.fill(); ctx.stroke();
 
-  // Ears (triangles)
-  ctx.fillStyle = '#ffffff';
-  ctx.lineWidth = cr * 0.08;
-  // Left
+  // Inner ears (pink)
+  ctx.fillStyle = '#ffb3c6';
   ctx.beginPath();
-  ctx.moveTo(cx - cr * 0.38, cy - cr * 0.48);
-  ctx.lineTo(cx - cr * 0.54, cy - cr * 0.95);
-  ctx.lineTo(cx - cr * 0.16, cy - cr * 0.52);
-  ctx.closePath(); ctx.fill(); ctx.stroke();
-  // Right
+  ctx.moveTo(cx - cr * 0.36, cy - cr * 0.52);
+  ctx.lineTo(cx - cr * 0.46, cy - cr * 0.75);
+  ctx.lineTo(cx - cr * 0.2, cy - cr * 0.55);
+  ctx.closePath(); ctx.fill();
   ctx.beginPath();
-  ctx.moveTo(cx + cr * 0.38, cy - cr * 0.48);
-  ctx.lineTo(cx + cr * 0.54, cy - cr * 0.95);
-  ctx.lineTo(cx + cr * 0.16, cy - cr * 0.52);
-  ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.moveTo(cx + cr * 0.36, cy - cr * 0.52);
+  ctx.lineTo(cx + cr * 0.46, cy - cr * 0.75);
+  ctx.lineTo(cx + cr * 0.2, cy - cr * 0.55);
+  ctx.closePath(); ctx.fill();
 
-  // Inner ear lines (just strokes)
-  ctx.lineWidth = cr * 0.05;
-  ctx.beginPath();
-  ctx.moveTo(cx - cr * 0.38, cy - cr * 0.56);
-  ctx.lineTo(cx - cr * 0.46, cy - cr * 0.78);
-  ctx.lineTo(cx - cr * 0.22, cy - cr * 0.59);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(cx + cr * 0.38, cy - cr * 0.56);
-  ctx.lineTo(cx + cr * 0.46, cy - cr * 0.78);
-  ctx.lineTo(cx + cr * 0.22, cy - cr * 0.59);
-  ctx.stroke();
-
-  // Eyes — two almond shapes
-  ctx.lineWidth = cr * 0.07;
-  ctx.fillStyle = '#111';
-  ctx.beginPath();
-  ctx.ellipse(cx - cr * 0.19, cy - cr * 0.13, cr * 0.11, cr * 0.13, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(cx + cr * 0.19, cy - cr * 0.13, cr * 0.11, cr * 0.13, 0, 0, Math.PI * 2);
-  ctx.fill();
+  // Eyes
+  ctx.fillStyle = '#1e272e';
+  ctx.beginPath(); ctx.ellipse(cx - cr * 0.18, cy - cr * 0.12, cr * 0.1, cr * 0.12, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx + cr * 0.18, cy - cr * 0.12, cr * 0.1, cr * 0.12, 0, 0, Math.PI * 2); ctx.fill();
   // Eye shine
-  ctx.fillStyle = '#fff';
-  ctx.beginPath(); ctx.arc(cx - cr*0.15, cy - cr*0.17, cr*0.04, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(cx + cr*0.23, cy - cr*0.17, cr*0.04, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  ctx.beginPath(); ctx.arc(cx - cr * 0.14, cy - cr * 0.16, cr * 0.04, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(cx + cr * 0.22, cy - cr * 0.16, cr * 0.04, 0, Math.PI * 2); ctx.fill();
 
-  // Nose (small triangle)
-  ctx.strokeStyle = '#111'; ctx.lineWidth = cr * 0.07;
-  ctx.beginPath();
-  ctx.moveTo(cx, cy + cr * 0.02);
-  ctx.lineTo(cx - cr * 0.07, cy - cr * 0.06);
-  ctx.lineTo(cx + cr * 0.07, cy - cr * 0.06);
-  ctx.closePath(); ctx.stroke();
+  // Nose
+  ctx.fillStyle = '#ffb3c6';
+  ctx.beginPath(); ctx.arc(cx, cy, cr * 0.07, 0, Math.PI * 2); ctx.fill();
 
-  // Mouth
-  ctx.lineWidth = cr * 0.07;
-  ctx.beginPath();
-  ctx.moveTo(cx, cy + cr * 0.02);
-  ctx.quadraticCurveTo(cx - cr * 0.14, cy + cr * 0.1, cx - cr * 0.22, cy + cr * 0.06);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(cx, cy + cr * 0.02);
-  ctx.quadraticCurveTo(cx + cr * 0.14, cy + cr * 0.1, cx + cr * 0.22, cy + cr * 0.06);
-  ctx.stroke();
-
-  // Whiskers (thin)
-  ctx.lineWidth = cr * 0.05;
-  [[-0.1,-0.05,-0.55,0.02],[-0.1,0.04,-0.55,0.14],
-   [0.1,-0.05, 0.55,0.02],[ 0.1, 0.04, 0.55,0.14]].forEach(([sx,sy,ex,ey]) => {
+  // Whiskers
+  ctx.strokeStyle = outlineColor;
+  ctx.lineWidth = 1;
+  [[-0.12,-0.35,-0.55,0.02],[-0.12,-0.01,-0.55,0.12],
+   [0.12,-0.35, 0.55,0.02],[ 0.12,-0.01, 0.55,0.12]].forEach(([sx,sy,ex,ey]) => {
     ctx.beginPath();
-    ctx.moveTo(cx + sx*cr*2, cy + sy*cr*2);
-    ctx.lineTo(cx + ex*cr*2, cy + ey*cr*2);
+    ctx.moveTo(cx + sx * cr * 2, cy + sy * cr * 2);
+    ctx.lineTo(cx + ex * cr * 2, cy + ey * cr * 2);
     ctx.stroke();
   });
 
-  // Paws (two small ovals at bottom of body)
-  ctx.fillStyle = '#ffffff';
-  ctx.lineWidth = cr * 0.07;
-  ctx.beginPath(); ctx.ellipse(cx - cr*0.35, cy + cr*0.95, cr*0.22, cr*0.14, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(cx + cr*0.35, cy + cr*0.95, cr*0.22, cr*0.14, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-  // Toe lines
-  ctx.lineWidth = cr * 0.04;
-  [-0.5,-0.35,-0.2].forEach(ox => { ctx.beginPath(); ctx.moveTo(cx+ox*cr*0.7,cy+cr*0.9); ctx.lineTo(cx+ox*cr*0.7,cy+cr*1.05); ctx.stroke(); });
-  [0.2, 0.35, 0.5].forEach(ox  => { ctx.beginPath(); ctx.moveTo(cx+ox*cr*0.7,cy+cr*0.9); ctx.lineTo(cx+ox*cr*0.7,cy+cr*1.05); ctx.stroke(); });
-
-  // Tail (curving line)
-  ctx.lineWidth = cr * 0.12;
+  // Tail
+  ctx.strokeStyle = outlineColor;
+  ctx.lineWidth = cr * 0.22;
   ctx.lineCap = 'round';
   ctx.beginPath();
-  ctx.moveTo(cx + cr*0.65, cy + cr*0.65);
-  ctx.quadraticCurveTo(cx + cr*1.5, cy + cr*1.2, cx + cr*1.1, cy + cr*0.0);
+  ctx.moveTo(cx + cr * 0.6, cy + cr * 0.6);
+  ctx.quadraticCurveTo(cx + cr * 1.4, cy + cr * 1.1, cx + cr * 0.9, cy + cr * 0.1);
   ctx.stroke();
-
-  // Fur texture lines on body (3 short strokes)
-  ctx.lineWidth = cr * 0.04;
-  [[cx - cr*0.3, cy + cr*0.3, cr*0.25],
-   [cx + cr*0.1, cy + cr*0.5, cr*0.28],
-   [cx - cr*0.1, cy + cr*0.7, cr*0.22]].forEach(([tx,ty,tl]) => {
-    ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(tx + tl, ty - tl*0.3); ctx.stroke();
-  });
-
-  ctx.restore();
-}
-
-// ---- DOODLE SCENES — DENSE WHERE'S WALDO STYLE ----
-// All B&W pen-ink. Every inch of canvas filled with detail.
-
-function bwSetup(ctx, W, H) {
-  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = '#111'; ctx.fillStyle = '#111';
-  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  ctx.setLineDash([]);
-}
-
-// Shared micro-detail helpers
-function doodleHatch(ctx, x, y, w, h, gap=8, angle=Math.PI/4) {
-  ctx.save();
-  ctx.beginPath(); ctx.rect(x,y,w,h); ctx.clip();
-  ctx.lineWidth=0.6; ctx.strokeStyle='#333';
-  const diag = Math.sqrt(w*w+h*h);
-  for (let d=-diag; d<diag; d+=gap) {
-    ctx.beginPath();
-    ctx.moveTo(x + d*Math.cos(angle) - diag*Math.sin(angle), y + d*Math.sin(angle) + diag*Math.cos(angle));
-    ctx.lineTo(x + d*Math.cos(angle) + diag*Math.sin(angle), y + d*Math.sin(angle) - diag*Math.cos(angle));
-    ctx.stroke();
-  }
-  ctx.restore();
-}
-function doodleDots(ctx, x, y, w, h, gap=10) {
-  ctx.save(); ctx.fillStyle='#333';
-  for (let px=x+gap/2; px<x+w; px+=gap)
-    for (let py=y+gap/2; py<y+h; py+=gap) {
-      ctx.beginPath(); ctx.arc(px,py,1,0,Math.PI*2); ctx.fill();
-    }
-  ctx.restore();
-}
-function doodleWavyLine(ctx, x1, y1, x2, y2, amp=8, freq=25) {
-  const len = Math.sqrt((x2-x1)**2+(y2-y1)**2);
-  const steps = Math.ceil(len/freq);
-  ctx.beginPath(); ctx.moveTo(x1, y1);
-  for (let i=1; i<=steps; i++) {
-    const t = i/steps;
-    const mx = x1+(x2-x1)*((i-0.5)/steps), my = y1+(y2-y1)*((i-0.5)/steps);
-    const perp = {x:-(y2-y1)/len, y:(x2-x1)/len};
-    const wave = amp * Math.sin(i * Math.PI);
-    ctx.quadraticCurveTo(mx+perp.x*wave, my+perp.y*wave, x1+(x2-x1)*t, y1+(y2-y1)*t);
-  }
-  ctx.stroke();
-}
-function doodleTree(ctx, tx, ty, th, tw) {
-  ctx.lineWidth=Math.max(1.5,tw*0.12); ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(tx,ty-th*0.4); ctx.stroke();
-  ctx.lineWidth=Math.max(1,tw*0.08);
-  ctx.beginPath(); ctx.moveTo(tx,ty-th*0.22); ctx.lineTo(tx-tw,ty-th*0.45); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(tx,ty-th*0.28); ctx.lineTo(tx+tw,ty-th*0.42); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(tx,ty-th*0.35); ctx.lineTo(tx-tw*0.5,ty-th*0.52); ctx.stroke();
-  ctx.lineWidth=1.2;
-  for (let layer=0; layer<3; layer++) {
-    const ly = ty-th*(0.45+layer*0.18), lw = tw*(1-layer*0.25);
-    ctx.beginPath(); ctx.moveTo(tx,ly-th*0.2); ctx.lineTo(tx-lw,ly); ctx.lineTo(tx+lw,ly); ctx.closePath(); ctx.stroke();
-    // texture
-    for (let tx2=tx-lw; tx2<tx+lw; tx2+=lw*0.3) {
-      ctx.beginPath(); ctx.arc(tx2+Math.random()*lw*0.2, ly-th*0.06+Math.random()*th*0.08, 2+Math.random()*3, 0, Math.PI*2); ctx.stroke();
-    }
-  }
-}
-function doodleBrick(ctx, x, y, w, h, bw=18, bh=10) {
-  ctx.save(); ctx.lineWidth=0.8;
-  for (let by=y; by<y+h; by+=bh) {
-    const offset = Math.floor((by-y)/bh)%2===0 ? 0 : bw/2;
-    for (let bx=x-offset; bx<x+w; bx+=bw) {
-      const rx=Math.max(x,bx), ry=by, rw=Math.min(x+w,bx+bw)-rx, rh=Math.min(y+h,by+bh)-ry;
-      if (rw>0&&rh>0) ctx.strokeRect(rx,ry,rw,rh);
-    }
-  }
-  ctx.restore();
-}
-function doodleRope(ctx, x1,y1,x2,y2, sag=20) {
-  ctx.lineWidth=1.2;
-  const mx=(x1+x2)/2, my=(y1+y2)/2+sag;
-  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.quadraticCurveTo(mx,my,x2,y2); ctx.stroke();
-}
-function doodleSmoke(ctx, x, y, r) {
-  ctx.lineWidth=0.9;
-  for (let s=0; s<5; s++) {
-    const sy=y-s*r*0.7, sr=r*(0.5+s*0.15), sx=x+Math.sin(s*1.2)*r*0.4;
-    ctx.beginPath(); ctx.arc(sx,sy,sr,0,Math.PI*2); ctx.stroke();
-  }
-}
-function doodleFlower(ctx, fx, fy, fr) {
-  ctx.lineWidth=0.9;
-  for (let p=0; p<7; p++) {
-    const a=(p/7)*Math.PI*2;
-    ctx.beginPath(); ctx.ellipse(fx+Math.cos(a)*fr, fy+Math.sin(a)*fr, fr*0.7, fr*0.4, a, 0, Math.PI*2); ctx.stroke();
-  }
-  ctx.lineWidth=1; ctx.beginPath(); ctx.arc(fx,fy,fr*0.45,0,Math.PI*2); ctx.stroke();
-  // petal veins
-  for (let p=0; p<7; p++) {
-    const a=(p/7)*Math.PI*2;
-    ctx.lineWidth=0.4;
-    ctx.beginPath(); ctx.moveTo(fx,fy); ctx.lineTo(fx+Math.cos(a)*fr*1.4, fy+Math.sin(a)*fr*1.4); ctx.stroke();
-  }
-}
-function doodlePerson(ctx, x, y, s) {
-  ctx.lineWidth=1.3;
-  ctx.beginPath(); ctx.arc(x,y-s*0.85,s*0.13,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x,y-s*0.72); ctx.lineTo(x,y-s*0.28); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x-s*0.16,y-s*0.55); ctx.lineTo(x+s*0.16,y-s*0.55); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x,y-s*0.28); ctx.lineTo(x-s*0.14,y); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x,y-s*0.28); ctx.lineTo(x+s*0.14,y); ctx.stroke();
-}
-function doodleBird(ctx, x, y, r) {
-  ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.moveTo(x-r,y); ctx.quadraticCurveTo(x-r/2,y-r*0.6,x,y);
-  ctx.quadraticCurveTo(x+r/2,y-r*0.6,x+r,y); ctx.stroke();
-}
-function doodleCloud(ctx, x, y, r) {
-  ctx.lineWidth=1.3;
-  [[0,0,r],[r*0.65,-r*0.3,r*0.72],[r*1.2,0,r*0.6],[-r*0.5,-r*0.2,r*0.62]].forEach(([dx,dy,cr]) => {
-    ctx.beginPath(); ctx.arc(x+dx,y+dy,cr,0,Math.PI*2); ctx.stroke();
-  });
-}
-function doodleWindow(ctx, x, y, w, h) {
-  ctx.lineWidth=1.2; ctx.strokeRect(x,y,w,h);
-  ctx.beginPath(); ctx.moveTo(x+w/2,y); ctx.lineTo(x+w/2,y+h); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x,y+h/2); ctx.lineTo(x+w,y+h/2); ctx.stroke();
-  // sill
-  ctx.beginPath(); ctx.moveTo(x-2,y+h); ctx.lineTo(x+w+2,y+h); ctx.stroke();
-}
-function doodleStars(ctx, cx, cy, r, n=5) {
-  ctx.lineWidth=0.8;
+  
+  // Tail color inner
+  ctx.strokeStyle = orangePatch;
+  ctx.lineWidth = cr * 0.14;
   ctx.beginPath();
-  for (let i=0;i<n*2;i++) {
-    const a=(i/(n*2))*Math.PI*2-Math.PI/2;
-    const rad=i%2===0?r:r*0.45;
-    if(i===0) ctx.moveTo(cx+Math.cos(a)*rad,cy+Math.sin(a)*rad);
-    else ctx.lineTo(cx+Math.cos(a)*rad,cy+Math.sin(a)*rad);
-  }
-  ctx.closePath(); ctx.stroke();
-}
-function doodleLantern(ctx, x, y, r) {
-  ctx.lineWidth=1;
-  ctx.beginPath(); ctx.ellipse(x,y,r*0.6,r,0,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.rect(x-r*0.5,y-r*0.3,r,r*0.6); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x,y-r); ctx.lineTo(x,y-r*1.4); ctx.stroke();
-  ctx.beginPath(); ctx.arc(x,y,r*0.2,0,Math.PI*2); ctx.stroke();
-}
-function doodleBalloon(ctx, x, y, r) {
-  ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.ellipse(x,y,r,r*1.2,0,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x-r*0.2,y+r*1.2); ctx.lineTo(x+r*0.2,y+r*1.2); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x,y+r*1.2); ctx.lineTo(x+r*0.1,y+r*2); ctx.stroke();
-  doodleWavyLine(ctx,x+r*0.1,y+r*2,x+r*0.1,y+r*2.8,3,12);
-}
-function doodleFish(ctx, fx, fy, fr, dir=1) {
-  ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.ellipse(fx,fy,fr,fr*0.5,0,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(fx-dir*fr,fy); ctx.lineTo(fx-dir*fr*1.6,fy-fr*0.55); ctx.lineTo(fx-dir*fr*1.6,fy+fr*0.55); ctx.closePath(); ctx.stroke();
-  ctx.lineWidth=0.7;
-  ctx.beginPath(); ctx.arc(fx+dir*fr*0.5,fy-fr*0.12,fr*0.14,0,Math.PI*2); ctx.stroke();
-  for (let sc=0;sc<3;sc++) { ctx.beginPath(); ctx.arc(fx-dir*fr*0.15+sc*dir*fr*0.22,fy,fr*0.28,0,Math.PI,dir<0); ctx.stroke(); }
+  ctx.moveTo(cx + cr * 0.6, cy + cr * 0.6);
+  ctx.quadraticCurveTo(cx + cr * 1.4, cy + cr * 1.1, cx + cr * 0.9, cy + cr * 0.1);
+  ctx.stroke();
+
+  ctx.restore();
 }
 
-// =================== SCENE 1: PACKED MARKET FESTIVAL ===================
+// ---- DOODLE SCENES ----
 function scene1(ctx, W, H) {
-  bwSetup(ctx, W, H);
-
-  // Sky texture - lots of small clouds and birds
-  for (let i=0;i<8;i++) doodleCloud(ctx, W*(0.05+i*0.13), H*(0.04+((i*37)%5)*0.03), W*0.055);
-  for (let i=0;i<12;i++) doodleBird(ctx, W*(0.05+i*0.09), H*(0.06+(i%3)*0.05), W*0.018);
-  // Sun top right with detailed rays
-  ctx.lineWidth=1.8; ctx.beginPath(); ctx.arc(W*0.88, H*0.08, W*0.06, 0, Math.PI*2); ctx.stroke();
-  for (let i=0;i<16;i++) {
-    const a=(i/16)*Math.PI*2;
-    ctx.lineWidth=1; ctx.beginPath();
-    ctx.moveTo(W*0.88+Math.cos(a)*W*0.075, H*0.08+Math.sin(a)*W*0.075);
-    ctx.lineTo(W*0.88+Math.cos(a)*W*(0.095+((i%3)*0.01)), H*0.08+Math.sin(a)*W*(0.095+((i%3)*0.01)));
-    ctx.stroke();
-  }
-  // Face in sun
-  ctx.lineWidth=0.8;
-  ctx.beginPath(); ctx.arc(W*0.875,H*0.072,W*0.012,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.arc(W*0.893,H*0.072,W*0.012,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.arc(W*0.884,H*0.088,W*0.018,0,Math.PI); ctx.stroke();
-
+  // Garden scene with flowers, butterflies, birds
+  ctx.strokeStyle = '#8B7355';
+  ctx.lineWidth = 1.5;
+  
   // Ground
-  ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,H*0.76); ctx.lineTo(W,H*0.76); ctx.stroke();
-  doodleHatch(ctx,0,H*0.76,W,H*0.24,12);
-
-  // === LEFT BUILDING with brick detail ===
-  ctx.lineWidth=1.5; ctx.strokeRect(0,H*0.12,W*0.22,H*0.64);
-  doodleBrick(ctx,0,H*0.12,W*0.22,H*0.64,20,12);
-  // 4 windows
-  [[W*0.03,H*0.15],[W*0.12,H*0.15],[W*0.03,H*0.3],[W*0.12,H*0.3],
-   [W*0.03,H*0.45],[W*0.12,H*0.45],[W*0.03,H*0.6],[W*0.12,H*0.6]].forEach(([wx,wy]) => doodleWindow(ctx,wx,wy,W*0.06,H*0.08));
-  // Water tank on roof
-  ctx.lineWidth=1.2; ctx.strokeRect(W*0.07,H*0.08,W*0.08,H*0.05);
-  ctx.beginPath(); ctx.moveTo(W*0.1,H*0.08); ctx.lineTo(W*0.1,H*0.04); ctx.stroke();
-  ctx.beginPath(); ctx.arc(W*0.1,H*0.04,W*0.015,0,Math.PI*2); ctx.stroke();
-  // Clothesline
-  doodleRope(ctx,W*0.22,H*0.2,W*0.42,H*0.22,15);
-  [[W*0.27,H*0.18],[W*0.31,H*0.17],[W*0.35,H*0.185],[W*0.39,H*0.18]].forEach(([cx2,cy2]) => {
-    ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(cx2,cy2); ctx.lineTo(cx2,cy2+H*0.06); ctx.stroke();
-    ctx.strokeRect(cx2-W*0.015,cy2+H*0.01,W*0.03,H*0.05);
-  });
-
-  // === CENTER BUILDING with arch ===
-  ctx.lineWidth=1.5; ctx.strokeRect(W*0.22,H*0.18,W*0.28,H*0.58);
-  doodleBrick(ctx,W*0.22,H*0.18,W*0.28,H*0.58,18,10);
-  // Big arch door
-  ctx.lineWidth=1.8;
-  ctx.beginPath(); ctx.moveTo(W*0.3,H*0.76); ctx.lineTo(W*0.3,H*0.55); ctx.arc(W*0.36,H*0.55,W*0.06,Math.PI,0); ctx.lineTo(W*0.42,H*0.76); ctx.stroke();
-  doodleHatch(ctx,W*0.3,H*0.55,W*0.12,H*0.21,8,-Math.PI/4);
-  // windows
-  [[W*0.25,H*0.22],[W*0.36,H*0.22],[W*0.25,H*0.36],[W*0.36,H*0.36]].forEach(([wx,wy]) => doodleWindow(ctx,wx,wy,W*0.07,H*0.1));
-  // Clock face on building
-  ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(W*0.36,H*0.5,W*0.035,0,Math.PI*2); ctx.stroke();
-  ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(W*0.36,H*0.5); ctx.lineTo(W*0.36,H*0.47); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.36,H*0.5); ctx.lineTo(W*0.385,H*0.5); ctx.stroke();
-  for (let hm=0;hm<12;hm++) { const ha=(hm/12)*Math.PI*2; ctx.beginPath(); ctx.arc(W*0.36+Math.cos(ha)*W*0.029,H*0.5+Math.sin(ha)*W*0.029,1.5,0,Math.PI*2); ctx.fill(); }
-
-  // === RIGHT BUILDING ===
-  ctx.lineWidth=1.5; ctx.strokeRect(W*0.72,H*0.15,W*0.28,H*0.61);
-  doodleBrick(ctx,W*0.72,H*0.15,W*0.28,H*0.61,20,12);
-  [[W*0.75,H*0.19],[W*0.86,H*0.19],[W*0.75,H*0.34],[W*0.86,H*0.34],
-   [W*0.75,H*0.49],[W*0.86,H*0.49],[W*0.75,H*0.64],[W*0.86,H*0.64]].forEach(([wx,wy]) => doodleWindow(ctx,wx,wy,W*0.07,H*0.09));
-  // Fancy roof
-  ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(W*0.72,H*0.15); ctx.lineTo(W*0.86,H*0.05); ctx.lineTo(W,H*0.15); ctx.stroke();
-  // Flag
-  ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(W*0.86,H*0.05); ctx.lineTo(W*0.86,H*0.0); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.86,H*0.0); ctx.lineTo(W*0.95,H*0.025); ctx.lineTo(W*0.86,H*0.05); ctx.stroke();
-
-  // Cobblestone street
-  ctx.lineWidth=0.6;
-  for (let cy2=H*0.78; cy2<H; cy2+=H*0.04)
-    for (let cx2=0; cx2<W; cx2+=W*0.08) {
-      ctx.beginPath(); ctx.ellipse(cx2+W*0.04,cy2+H*0.02,W*0.038,H*0.018,0,0,Math.PI*2); ctx.stroke();
-    }
-
-  // Street stalls / market
-  // Stall 1 (left)
-  ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.moveTo(W*0.02,H*0.76); ctx.lineTo(W*0.02,H*0.65); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.2,H*0.76); ctx.lineTo(W*0.2,H*0.65); ctx.stroke();
-  doodleWavyLine(ctx,W*0.0,H*0.65,W*0.22,H*0.65,5,15);
-  ctx.beginPath(); ctx.moveTo(W*0.0,H*0.65); ctx.lineTo(W*0.11,H*0.6); ctx.lineTo(W*0.22,H*0.65); ctx.stroke();
-  // fruits on stall
-  [[W*0.04,H*0.71],[W*0.09,H*0.7],[W*0.14,H*0.71],[W*0.19,H*0.72]].forEach(([fx,fy]) => {
-    ctx.beginPath(); ctx.arc(fx,fy,W*0.02,0,Math.PI*2); ctx.stroke();
-    ctx.lineWidth=0.5; ctx.beginPath(); ctx.moveTo(fx,fy-W*0.02); ctx.lineTo(fx+W*0.01,fy-W*0.035); ctx.stroke();
-    ctx.lineWidth=1.2;
-  });
-
-  // Stall 2 (right center)
-  ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.moveTo(W*0.5,H*0.76); ctx.lineTo(W*0.5,H*0.62); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.7,H*0.76); ctx.lineTo(W*0.7,H*0.62); ctx.stroke();
-  // Striped awning
-  for (let sx=W*0.5; sx<W*0.7; sx+=W*0.03) {
-    ctx.lineWidth=(Math.floor((sx-W*0.5)/(W*0.03))%2===0)?1.5:0.5;
-    ctx.beginPath(); ctx.moveTo(sx,H*0.62); ctx.lineTo(sx,H*0.67); ctx.stroke();
+  ctx.fillStyle = '#c8e6c9'; ctx.fillRect(0, H*0.75, W, H*0.25);
+  ctx.fillStyle = '#4caf50';
+  for (let x = 0; x < W; x += 12) {
+    ctx.beginPath();
+    ctx.moveTo(x, H*0.75);
+    ctx.quadraticCurveTo(x+4, H*0.72, x+8, H*0.75);
+    ctx.fillStyle = '#4caf50';
+    ctx.fill();
   }
-  ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(W*0.5,H*0.62); ctx.lineTo(W*0.6,H*0.57); ctx.lineTo(W*0.7,H*0.62); ctx.stroke();
-  // Hanging items
-  [W*0.53,W*0.58,W*0.63,W*0.68].forEach(hx => {
-    ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(hx,H*0.62); ctx.lineTo(hx,H*0.66+H*0.02); ctx.stroke();
-    ctx.beginPath(); ctx.arc(hx,H*0.68,W*0.015,0,Math.PI*2); ctx.stroke();
-  });
 
-  // People crowd (many)
-  [[W*0.45,H*0.76],[W*0.52,H*0.76],[W*0.59,H*0.76],[W*0.66,H*0.76],[W*0.25,H*0.76],[W*0.33,H*0.76]].forEach(([px,py]) => doodlePerson(ctx,px,py,H*0.09));
-
-  // Lamp posts
-  [W*0.1,W*0.48,W*0.78].forEach(lx => {
-    ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(lx,H*0.76); ctx.lineTo(lx,H*0.45); ctx.stroke();
-    ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(lx,H*0.45); ctx.quadraticCurveTo(lx+W*0.04,H*0.41,lx+W*0.07,H*0.43); ctx.stroke();
-    doodleLantern(ctx,lx+W*0.07,H*0.43,W*0.022);
-  });
-
-  // Pigeons everywhere
-  [[W*0.16,H*0.74],[W*0.43,H*0.75],[W*0.8,H*0.74],[W*0.88,H*0.73]].forEach(([px,py]) => {
-    ctx.lineWidth=0.9;
-    ctx.beginPath(); ctx.ellipse(px,py,7,5,0,0,Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.arc(px+6,py-4,4,0,Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(px-5,py-2); ctx.quadraticCurveTo(px,py-7,px+5,py-2); ctx.stroke();
-  });
-
-  // Balloons being sold
-  [W*0.78,W*0.82,W*0.86].forEach((bx,i) => doodleBalloon(ctx,bx,H*(0.5-i*0.06),W*0.025));
+  // Big tree
+  ctx.fillStyle = '#795548';
+  ctx.fillRect(W*0.1, H*0.35, W*0.06, H*0.4);
+  ctx.fillStyle = '#66bb6a';
+  ctx.beginPath(); ctx.arc(W*0.13, H*0.28, W*0.13, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#81c784';
+  ctx.beginPath(); ctx.arc(W*0.08, H*0.3, W*0.08, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(W*0.18, H*0.26, W*0.07, 0, Math.PI*2); ctx.fill();
 
   // Flowers
-  [[W*0.47,H*0.74],[W*0.7,H*0.73],[W*0.93,H*0.74]].forEach(([fx,fy]) => doodleFlower(ctx,fx,fy,W*0.022));
-
-  // Smoke from chimney
-  doodleSmoke(ctx,W*0.15,H*0.12,W*0.022);
-  doodleSmoke(ctx,W*0.82,H*0.15,W*0.02);
-
-  // Cat-shaped weather vane on right building
-  ctx.lineWidth=0.9; ctx.beginPath(); ctx.moveTo(W*0.86,H*0.05); ctx.lineTo(W*0.86,H*0.03); ctx.stroke();
-  ctx.beginPath(); ctx.arc(W*0.86,H*0.02,W*0.013,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.847,H*0.01); ctx.lineTo(W*0.853,H*0.0); ctx.lineTo(W*0.858,H*0.01); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.862,H*0.01); ctx.lineTo(W*0.868,H*0.0); ctx.lineTo(W*0.873,H*0.01); ctx.stroke();
-
-  // Dense foliage (bushes at base)
-  [W*0.44,W*0.56,W*0.68].forEach(bx => {
-    ctx.lineWidth=1;
-    for (let li=0;li<6;li++) {
-      const la=(li/6)*Math.PI;
-      ctx.beginPath(); ctx.ellipse(bx+Math.cos(la)*W*0.025,H*0.76+Math.sin(la)*H*0.02-H*0.04,W*0.028,H*0.03,la,0,Math.PI*2); ctx.stroke();
-    }
-  });
-}
-
-// =================== SCENE 2: DENSE UNDERWATER WORLD ===================
-function scene2(ctx, W, H) {
-  bwSetup(ctx, W, H);
-
-  // Water surface waves (many layers)
-  for (let wy=H*0.01; wy<H*0.08; wy+=H*0.016) {
-    ctx.lineWidth=wy<H*0.03?1.8:1;
-    ctx.beginPath(); ctx.moveTo(0,wy);
-    for (let wx=0; wx<W; wx+=18) ctx.quadraticCurveTo(wx+9,wy-(6-wy/H*20),wx+18,wy);
-    ctx.stroke();
-  }
-  // Boat silhouette at surface
-  ctx.lineWidth=1.8; ctx.beginPath(); ctx.moveTo(W*0.3,H*0.04); ctx.lineTo(W*0.22,H*0.065); ctx.lineTo(W*0.5,H*0.065); ctx.lineTo(W*0.45,H*0.04); ctx.closePath(); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.375,H*0.04); ctx.lineTo(W*0.375,H*0.0); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.375,H*0.0); ctx.lineTo(W*0.46,H*0.03); ctx.lineTo(W*0.375,H*0.04); ctx.stroke();
-  // Anchor chain
-  ctx.setLineDash([4,4]); ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(W*0.36,H*0.065); ctx.lineTo(W*0.38,H*0.35); ctx.stroke();
-  ctx.setLineDash([]);
-  // Anchor
-  ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(W*0.38,H*0.36,W*0.02,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.38,H*0.38); ctx.lineTo(W*0.38,H*0.43); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.365,H*0.43); ctx.lineTo(W*0.395,H*0.43); ctx.stroke();
-
-  // Seabed layered
-  ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,H*0.82); ctx.lineTo(W,H*0.82); ctx.stroke();
-  doodleHatch(ctx,0,H*0.82,W,H*0.18,10);
-  // Sand ripples
-  for (let ry=H*0.84; ry<H; ry+=H*0.035) {
-    ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(0,ry);
-    for (let rx=0; rx<W; rx+=24) ctx.quadraticCurveTo(rx+12,ry-5,rx+24,ry);
-    ctx.stroke();
-  }
-
-  // 6 columns of seaweed (dense)
-  [W*0.08,W*0.18,W*0.38,W*0.55,W*0.7,W*0.88].forEach((sx,si) => {
-    const height = H*(0.3+si*0.04);
-    ctx.lineWidth=2.5-(si*0.2);
-    ctx.beginPath(); ctx.moveTo(sx,H*0.82);
-    let cy2=H*0.82;
-    while(cy2>H*0.82-height) {
-      const wave=(si%2===0?1:-1)*14;
-      ctx.quadraticCurveTo(sx+wave,cy2-13,sx-wave,cy2-26); cy2-=26;
-    }
-    ctx.stroke();
-    // leaves
-    ctx.lineWidth=1;
-    for (let leaf=0; leaf<4; leaf++) {
-      const ly=H*0.82-leaf*height/4, ldir=leaf%2===0?1:-1;
-      ctx.beginPath(); ctx.ellipse(sx+ldir*W*0.025,ly,W*0.025,H*0.02,ldir*0.5,0,Math.PI*2); ctx.stroke();
-    }
-  });
-
-  // Many fish of different sizes
-  [[W*0.55,H*0.22,W*0.11,1],[W*0.18,H*0.38,-1,W*0.09],[W*0.7,H*0.47,W*0.07,1],
-   [W*0.35,H*0.6,-1,W*0.055],[W*0.82,H*0.3,W*0.1,1],[W*0.12,H*0.6,-1,W*0.065],
-   [W*0.62,H*0.65,W*0.065,1],[W*0.42,H*0.28,-1,W*0.08],[W*0.78,H*0.55,W*0.05,-1]].forEach(([fx,fy,fd,fr]) => {
-    doodleFish(ctx,fx,fy,fr,fd);
-  });
-
-  // 3 jellyfish with many tentacles
-  [[W*0.14,H*0.16,W*0.065],[W*0.68,H*0.12,W*0.055],[W*0.9,H*0.25,W*0.045]].forEach(([jx,jy,jr]) => {
-    ctx.lineWidth=1.5; ctx.beginPath(); ctx.ellipse(jx,jy,jr,jr*0.6,0,Math.PI,0); ctx.stroke();
-    // Inner bell lines
-    ctx.lineWidth=0.6;
-    for (let line=0;line<3;line++) { ctx.beginPath(); ctx.moveTo(jx-jr*(0.6-line*0.3),jy); ctx.quadraticCurveTo(jx-jr*(0.5-line*0.25),jy+jr*0.4,jx-jr*(0.4-line*0.2),jy+jr*0.6); ctx.stroke(); }
-    // Many tentacles
-    ctx.lineWidth=0.9;
-    for (let t=-4;t<=4;t++) {
-      const tx=jx+t*jr*0.24;
-      ctx.beginPath(); ctx.moveTo(tx,jy);
-      let tcy=jy, wdir=t%2===0?1:-1;
-      while(tcy<jy+jr*3) { ctx.quadraticCurveTo(tx+wdir*8,tcy+jr*0.4,tx-wdir*8,tcy+jr*0.8); tcy+=jr*0.8; wdir*=-1; }
-      ctx.stroke();
-    }
-  });
-
-  // Starfish (detailed)
-  [[W*0.12,H*0.86],[W*0.55,H*0.88],[W*0.82,H*0.85],[W*0.35,H*0.9]].forEach(([sx,sy]) => {
-    ctx.lineWidth=1.3;
-    for (let a=0;a<5;a++) {
-      const ang=(a/5)*Math.PI*2-Math.PI/2, ang2=ang+Math.PI/5;
-      ctx.beginPath(); ctx.moveTo(sx,sy);
-      ctx.lineTo(sx+Math.cos(ang)*W*0.042,sy+Math.sin(ang)*W*0.042);
-      ctx.lineTo(sx+Math.cos(ang2)*W*0.02,sy+Math.sin(ang2)*W*0.02);
-      ctx.closePath(); ctx.stroke();
-    }
-    // texture dots
-    ctx.lineWidth=0.5;
-    for (let d=0;d<8;d++) { const da=(d/8)*Math.PI*2; ctx.beginPath(); ctx.arc(sx+Math.cos(da)*W*0.022,sy+Math.sin(da)*W*0.022,2,0,Math.PI*2); ctx.stroke(); }
-  });
-
-  // Dense coral formations
-  [[W*0.05,H*0.82],[W*0.25,H*0.82],[W*0.62,H*0.82],[W*0.78,H*0.82],[W*0.92,H*0.82]].forEach(([cx2,cy2]) => {
-    ctx.lineWidth=1.5;
-    const h2=H*0.15;
-    ctx.beginPath(); ctx.moveTo(cx2,cy2); ctx.lineTo(cx2,cy2-h2*0.55); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx2,cy2-h2*0.25); ctx.lineTo(cx2-h2*0.18,cy2-h2*0.6); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx2,cy2-h2*0.25); ctx.lineTo(cx2+h2*0.18,cy2-h2*0.6); ctx.stroke();
-    [[0,-0.6],[-.18,-0.6],[.18,-0.6]].forEach(([dx,dy]) => {
-      ctx.lineWidth=1;
-      ctx.beginPath(); ctx.arc(cx2+dx*h2,cy2+dy*h2,h2*0.09,0,Math.PI*2); ctx.stroke();
-      for (let i=0;i<6;i++) {
-        const a=(i/6)*Math.PI*2;
-        ctx.beginPath(); ctx.moveTo(cx2+dx*h2,cy2+dy*h2);
-        ctx.lineTo(cx2+dx*h2+Math.cos(a)*h2*0.09,cy2+dy*h2+Math.sin(a)*h2*0.09); ctx.stroke();
-      }
-    });
-  });
-
-  // Treasure area (full scene)
-  ctx.lineWidth=1.5; ctx.strokeRect(W*0.38,H*0.82,W*0.14,H*0.1);
-  ctx.beginPath(); ctx.ellipse(W*0.45,H*0.82,W*0.07,H*0.015,0,Math.PI,0); ctx.stroke();
-  // Lock
-  ctx.beginPath(); ctx.arc(W*0.45,H*0.86,W*0.015,0,Math.PI*2); ctx.stroke();
-  ctx.strokeRect(W*0.44,H*0.86,W*0.02,W*0.016);
-  // Coins spilling
-  for (let ci=0;ci<8;ci++) {
-    ctx.beginPath(); ctx.ellipse(W*(0.34+ci*0.02),H*0.9,W*0.01,W*0.007,Math.random()*Math.PI,0,Math.PI*2); ctx.stroke();
-  }
-  // Gems
-  [[W*0.56,H*0.84],[W*0.6,H*0.86],[W*0.58,H*0.9]].forEach(([gx,gy]) => {
-    ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(gx,gy-W*0.015); ctx.lineTo(gx-W*0.012,gy); ctx.lineTo(gx,gy+W*0.015); ctx.lineTo(gx+W*0.012,gy); ctx.closePath(); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(gx-W*0.012,gy); ctx.lineTo(gx+W*0.012,gy); ctx.stroke();
-  });
-
-  // Bubbles everywhere
-  [[W*0.08,H*0.45,7],[W*0.25,H*0.32,5],[W*0.5,H*0.35,9],[W*0.72,H*0.2,6],[W*0.88,H*0.42,8],
-   [W*0.35,H*0.58,4],[W*0.9,H*0.28,6],[W*0.62,H*0.52,5],[W*0.18,H*0.7,8]].forEach(([bx,by,br]) => {
-    ctx.lineWidth=0.9; ctx.beginPath(); ctx.arc(bx,by,br,0,Math.PI*2); ctx.stroke();
-    ctx.lineWidth=0.5; ctx.beginPath(); ctx.arc(bx-br*0.3,by-br*0.3,br*0.35,0,Math.PI*2); ctx.stroke();
-  });
-
-  // Submarine (larger, detailed)
-  ctx.lineWidth=1.8; ctx.beginPath(); ctx.ellipse(W*0.5,H*0.12,W*0.14,W*0.052,0,0,Math.PI*2); ctx.stroke();
-  // Conning tower
-  ctx.strokeRect(W*0.46,H*0.06,W*0.05,W*0.055);
-  ctx.strokeRect(W*0.47,H*0.04,W*0.015,W*0.022);
-  // Portholes
-  [W*0.4,W*0.49,W*0.58].forEach(px => { ctx.lineWidth=1; ctx.beginPath(); ctx.arc(px,H*0.12,W*0.016,0,Math.PI*2); ctx.stroke(); ctx.lineWidth=0.5; ctx.beginPath(); ctx.arc(px,H*0.12,W*0.01,0,Math.PI*2); ctx.stroke(); });
-  // Propeller
-  ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(W*0.64,H*0.12); ctx.lineTo(W*0.68,H*0.12); ctx.stroke();
-  for (let pa=0;pa<3;pa++) { const a=(pa/3)*Math.PI*2; ctx.beginPath(); ctx.ellipse(W*0.68,H*0.12,W*0.022,W*0.01,a,0,Math.PI*2); ctx.stroke(); }
-  // Torpedo launcher
-  ctx.lineWidth=1; ctx.strokeRect(W*0.36,H*0.115,W*0.045,W*0.01);
-
-  // Mermaid silhouette
-  ctx.lineWidth=1.3;
-  ctx.beginPath(); ctx.arc(W*0.88,H*0.65,W*0.028,0,Math.PI*2); ctx.stroke(); // head
-  ctx.beginPath(); ctx.ellipse(W*0.88,H*0.7,W*0.018,W*0.04,0,0,Math.PI*2); ctx.stroke(); // torso
-  ctx.beginPath(); ctx.ellipse(W*0.88,H*0.76,W*0.012,W*0.035,-0.2,0,Math.PI*2); ctx.stroke(); // tail
-  // tail fin
-  ctx.beginPath(); ctx.moveTo(W*0.88,H*0.795); ctx.lineTo(W*0.86,H*0.82); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.88,H*0.795); ctx.lineTo(W*0.9,H*0.82); ctx.stroke();
-  // hair flowing
-  ctx.lineWidth=1; ctx.setLineDash([3,3]);
-  ctx.beginPath(); ctx.moveTo(W*0.88,H*0.63); ctx.quadraticCurveTo(W*0.93,H*0.66,W*0.91,H*0.72); ctx.stroke();
-  ctx.setLineDash([]);
-
-  // Octopus tentacles (peeking from bottom corner)
-  ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(W*0.05,H*0.98,W*0.04,Math.PI,0); ctx.stroke();
-  for (let t=0;t<5;t++) {
-    const tx=W*(0.01+t*0.018), ta=(t/5)*Math.PI;
-    ctx.lineWidth=1.2;
-    ctx.beginPath(); ctx.moveTo(tx,H*0.98);
-    ctx.quadraticCurveTo(tx+Math.cos(ta)*W*0.06,H*0.85,tx+Math.cos(ta)*W*0.08,H*0.78); ctx.stroke();
-  }
-}
-
-// =================== SCENE 3: ENCHANTED FOREST (DENSE) ===================
-function scene3(ctx, W, H) {
-  bwSetup(ctx, W, H);
-
-  // Sky — full of stars, moon, bats
-  ctx.lineWidth=0.8;
-  for (let s=0; s<50; s++) {
-    const sx=(s*W*0.019+W*0.02)%W, sy=(s*H*0.021)%( H*0.35);
-    doodleStars(ctx,sx,sy,W*0.008+(s%3)*W*0.003,5);
-  }
-  // Moon with face
-  ctx.lineWidth=1.8; ctx.beginPath(); ctx.arc(W*0.82,H*0.1,W*0.07,0,Math.PI*2); ctx.stroke();
-  ctx.lineWidth=0.9;
-  ctx.beginPath(); ctx.arc(W*0.808,H*0.087,W*0.014,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.arc(W*0.834,H*0.087,W*0.014,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.arc(W*0.821,H*0.108,W*0.022,0,Math.PI); ctx.stroke();
-  [[W*0.795,H*0.07,W*0.012],[W*0.84,H*0.115,W*0.009]].forEach(([cx2,cy2,cr2]) => { ctx.beginPath(); ctx.arc(cx2,cy2,cr2,0,Math.PI*2); ctx.stroke(); });
-
-  // Bats
-  [[W*0.3,H*0.08],[W*0.5,H*0.05],[W*0.15,H*0.12],[W*0.65,H*0.06],[W*0.42,H*0.14]].forEach(([bx,by]) => {
-    ctx.lineWidth=1;
-    ctx.beginPath(); ctx.arc(bx,by,W*0.008,0,Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(bx-W*0.008,by); ctx.bezierCurveTo(bx-W*0.03,by-W*0.02,bx-W*0.045,by,bx-W*0.055,by+W*0.01); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(bx+W*0.008,by); ctx.bezierCurveTo(bx+W*0.03,by-W*0.02,bx+W*0.045,by,bx+W*0.055,by+W*0.01); ctx.stroke();
-  });
-
-  // Ground + roots
-  ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,H*0.8); ctx.lineTo(W,H*0.8); ctx.stroke();
-  doodleHatch(ctx,0,H*0.8,W,H*0.2,14);
-
-  // 9 dense trees filling the width
-  [[W*0.04,H*0.8,H*0.52,W*0.07],[W*0.14,H*0.8,H*0.42,W*0.06],[W*0.24,H*0.8,H*0.55,W*0.08],
-   [W*0.36,H*0.8,H*0.48,W*0.065],[W*0.5,H*0.8,H*0.58,W*0.09],[W*0.62,H*0.8,H*0.44,W*0.06],
-   [W*0.73,H*0.8,H*0.52,W*0.075],[W*0.84,H*0.8,H*0.46,W*0.065],[W*0.93,H*0.8,H*0.38,W*0.055]].forEach(([tx,ty,th,tw]) => {
-    doodleTree(ctx,tx,ty,th,tw);
-    // Roots spread
-    ctx.lineWidth=1.2;
-    [[-1,-0.8],[-0.4,-0.3],[0.4,-0.3],[1,-0.8]].forEach(([rdx,rdy]) => {
-      ctx.beginPath(); ctx.moveTo(tx,ty); ctx.quadraticCurveTo(tx+rdx*tw,ty+rdy*H*0.04,tx+rdx*tw*1.8,ty+H*0.015); ctx.stroke();
-    });
-    // Vines hanging from branches
-    for (let v=0;v<3;v++) {
-      const vx=tx+(v-1)*tw*0.7, vy=ty-th*0.65;
-      ctx.lineWidth=0.8; ctx.setLineDash([2,4]);
-      ctx.beginPath(); ctx.moveTo(vx,vy); ctx.lineTo(vx+Math.sin(v)*W*0.02,vy+H*0.12); ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.beginPath(); ctx.ellipse(vx+Math.sin(v)*W*0.02,vy+H*0.12,W*0.012,H*0.015,0.3,0,Math.PI*2); ctx.stroke();
-    }
-  });
-
-  // Dense mushroom ring
-  for (let m=0; m<8; m++) {
-    const mx=W*(0.15+m*0.1), my=H*0.8, mr=W*(0.02+m%3*0.008);
-    ctx.lineWidth=1.2;
-    ctx.strokeRect(mx-mr*0.4,my-mr*1.1,mr*0.8,mr*1.1);
-    ctx.beginPath(); ctx.ellipse(mx,my-mr*1.1,mr,mr*0.55,0,Math.PI,0); ctx.stroke();
-    for (let sd=0;sd<4;sd++) { const sa=(sd/4)*Math.PI+0.2; ctx.lineWidth=0.5; ctx.beginPath(); ctx.arc(mx+Math.cos(sa)*mr*0.5,my-mr*1.4+Math.sin(sa)*mr*0.2,mr*0.1,0,Math.PI*2); ctx.stroke(); }
-  }
-
-  // Owl (detailed)
-  ctx.lineWidth=1.5;
-  const ox=W*0.45, oy=H*0.45;
-  ctx.beginPath(); ctx.ellipse(ox,oy+W*0.04,W*0.038,W*0.055,0,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(ox,oy-W*0.02,W*0.03,W*0.032,0,0,Math.PI*2); ctx.stroke();
-  // facial disc
-  ctx.lineWidth=0.8; ctx.beginPath(); ctx.ellipse(ox,oy-W*0.02,W*0.026,W*0.028,0,0,Math.PI*2); ctx.stroke();
-  // Eyes with pupils
-  ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(ox-W*0.013,oy-W*0.027,W*0.013,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.arc(ox+W*0.013,oy-W*0.027,W*0.013,0,Math.PI*2); ctx.stroke();
-  ctx.fillStyle='#111'; ctx.beginPath(); ctx.arc(ox-W*0.013,oy-W*0.027,W*0.006,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(ox+W*0.013,oy-W*0.027,W*0.006,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(ox-W*0.01,oy-W*0.03,W*0.003,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(ox+W*0.016,oy-W*0.03,W*0.003,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='#111';
-  // Beak
-  ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(ox,oy-W*0.016); ctx.lineTo(ox-W*0.007,oy); ctx.lineTo(ox+W*0.007,oy); ctx.closePath(); ctx.stroke();
-  // Ear tufts
-  ctx.beginPath(); ctx.moveTo(ox-W*0.016,oy-W*0.042); ctx.lineTo(ox-W*0.024,oy-W*0.062); ctx.lineTo(ox-W*0.008,oy-W*0.048); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(ox+W*0.016,oy-W*0.042); ctx.lineTo(ox+W*0.024,oy-W*0.062); ctx.lineTo(ox+W*0.008,oy-W*0.048); ctx.stroke();
-  // Wing feather details
-  ctx.lineWidth=0.7;
-  for (let f=0;f<5;f++) { ctx.beginPath(); ctx.moveTo(ox-W*0.038+f*W*0.015,oy+W*0.01); ctx.lineTo(ox-W*0.048+f*W*0.015,oy+W*0.065); ctx.stroke(); }
-  // Branch
-  ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(W*0.33,H*0.48); ctx.lineTo(W*0.6,H*0.46); ctx.stroke();
-  // Talons
-  ctx.lineWidth=1; [ox-W*0.015,ox+W*0.015].forEach(tx2 => {
-    [[-0.02,0],[0,0.02],[0.02,0]].forEach(([dx2,dy2]) => { ctx.beginPath(); ctx.moveTo(tx2,H*0.48); ctx.lineTo(tx2+dx2*W,H*0.48+dy2*H); ctx.stroke(); });
-  });
-
-  // Fox (detailed)
-  const fx2=W*0.62, fy2=H*0.76;
-  ctx.lineWidth=1.4;
-  ctx.beginPath(); ctx.ellipse(fx2,fy2,W*0.065,W*0.032,0,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(fx2+W*0.06,fy2-W*0.022,W*0.04,W*0.038,0.3,0,Math.PI*2); ctx.stroke();
-  // snout
-  ctx.beginPath(); ctx.ellipse(fx2+W*0.095,fy2-W*0.005,W*0.022,W*0.016,0,0,Math.PI*2); ctx.stroke();
-  // Eye, nose, mouth
-  ctx.lineWidth=0.9; ctx.beginPath(); ctx.arc(fx2+W*0.082,fy2-W*0.025,W*0.008,0,Math.PI*2); ctx.stroke();
-  ctx.fillStyle='#111'; ctx.beginPath(); ctx.arc(fx2+W*0.082,fy2-W*0.025,W*0.004,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(fx2+W*0.085,fy2-W*0.028,W*0.002,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fff';
-  ctx.strokeStyle='#111';
-  // Ears
-  ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.moveTo(fx2+W*0.03,fy2-W*0.04); ctx.lineTo(fx2+W*0.015,fy2-W*0.07); ctx.lineTo(fx2+W*0.06,fy2-W*0.052); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(fx2+W*0.065,fy2-W*0.038); ctx.lineTo(fx2+W*0.06,fy2-W*0.072); ctx.lineTo(fx2+W*0.092,fy2-W*0.048); ctx.stroke();
-  // Legs
-  ctx.lineWidth=1.3;
-  [fx2-W*0.045,fx2-W*0.015,fx2+W*0.018,fx2+W*0.048].forEach(lx2 => {
-    ctx.beginPath(); ctx.moveTo(lx2,fy2+W*0.025); ctx.lineTo(lx2-W*0.003,fy2+W*0.06); ctx.stroke();
-  });
-  // Bushy tail
-  ctx.lineWidth=2.2; ctx.lineCap='round';
-  ctx.beginPath(); ctx.moveTo(fx2-W*0.065,fy2); ctx.quadraticCurveTo(fx2-W*0.11,fy2-W*0.04,fx2-W*0.095,fy2-W*0.09); ctx.stroke();
-  ctx.lineWidth=1; ctx.lineCap='round';
-  ctx.beginPath(); ctx.moveTo(fx2-W*0.095,fy2-W*0.09); ctx.arc(fx2-W*0.1,fy2-W*0.1,W*0.025,0,Math.PI*2); ctx.stroke();
-  ctx.lineCap='round';
-
-  // Spider web (large, detailed)
-  const wx2=W*0.9, wy2=H*0.32;
-  ctx.lineWidth=0.7;
-  for (let r2=W*0.02; r2<=W*0.09; r2+=W*0.017) {
-    ctx.beginPath(); ctx.arc(wx2,wy2,r2,0,Math.PI*2); ctx.stroke();
-    // Dewdrops
-    for (let a=0;a<8;a++) { const ang=(a/8)*Math.PI*2; ctx.lineWidth=0.5; ctx.beginPath(); ctx.arc(wx2+Math.cos(ang)*r2,wy2+Math.sin(ang)*r2,1.5,0,Math.PI*2); ctx.fill(); ctx.lineWidth=0.7; }
-  }
-  for (let a=0;a<12;a++) { const ang=(a/12)*Math.PI*2; ctx.lineWidth=0.7; ctx.beginPath(); ctx.moveTo(wx2,wy2); ctx.lineTo(wx2+Math.cos(ang)*W*0.09,wy2+Math.sin(ang)*W*0.09); ctx.stroke(); }
-  ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(wx2,wy2,4,0,Math.PI*2); ctx.stroke(); // spider body
-  ctx.lineWidth=0.8;
-  for (let sl=0;sl<8;sl++) { const sa=(sl/8)*Math.PI*2; ctx.beginPath(); ctx.moveTo(wx2,wy2); ctx.lineTo(wx2+Math.cos(sa)*W*0.022,wy2+Math.sin(sa)*W*0.022); ctx.stroke(); }
-
-  // Fairy lights (string between trees)
-  doodleRope(ctx,W*0.04,H*0.5,W*0.25,H*0.52,12);
-  doodleRope(ctx,W*0.25,H*0.52,W*0.5,H*0.48,10);
-  for (let li=0;li<12;li++) {
-    const lx3=W*(0.04+li*0.04), ly3=H*0.5+Math.sin(li*0.5)*H*0.03+H*0.02;
-    ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(lx3,ly3-H*0.01); ctx.lineTo(lx3,ly3+H*0.015); ctx.stroke();
-    ctx.lineWidth=1; ctx.beginPath(); ctx.arc(lx3,ly3+H*0.015,W*0.01,0,Math.PI*2); ctx.stroke();
-  }
-
-  // Fireflies — small double-ring
-  [[W*0.32,H*0.55],[W*0.44,H*0.42],[W*0.6,H*0.38],[W*0.2,H*0.62],[W*0.7,H*0.53],[W*0.38,H*0.7],[W*0.8,H*0.65],[W*0.1,H*0.55]].forEach(([ffx,ffy]) => {
-    ctx.lineWidth=0.8; ctx.beginPath(); ctx.arc(ffx,ffy,3,0,Math.PI*2); ctx.stroke();
-    ctx.lineWidth=0.4; ctx.beginPath(); ctx.arc(ffx,ffy,6,0,Math.PI*2); ctx.stroke();
-  });
-
-  // Deer (detailed, right side)
-  const dx=W*0.2, dy=H*0.7;
-  ctx.lineWidth=1.4;
-  ctx.beginPath(); ctx.ellipse(dx,dy,W*0.07,W*0.036,0,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(dx+W*0.06,dy-W*0.024,W*0.04,W*0.045,0.4,0,Math.PI*2); ctx.stroke();
-  // legs
-  [dx-W*0.05,dx-W*0.015,dx+W*0.02,dx+W*0.055].forEach(lx3 => {
-    ctx.beginPath(); ctx.moveTo(lx3,dy+W*0.025); ctx.lineTo(lx3,dy+W*0.06); ctx.stroke();
-  });
-  // Antlers
-  ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.moveTo(dx+W*0.055,dy-W*0.06); ctx.lineTo(dx+W*0.04,dy-W*0.11); ctx.lineTo(dx+W*0.025,dy-W*0.1); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(dx+W*0.04,dy-W*0.11); ctx.lineTo(dx+W*0.055,dy-W*0.12); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(dx+W*0.07,dy-W*0.06); ctx.lineTo(dx+W*0.085,dy-W*0.11); ctx.lineTo(dx+W*0.1,dy-W*0.1); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(dx+W*0.085,dy-W*0.11); ctx.lineTo(dx+W*0.07,dy-W*0.13); ctx.stroke();
-  ctx.lineWidth=1; ctx.beginPath(); ctx.arc(dx+W*0.082,dy-W*0.028,W*0.007,0,Math.PI*2); ctx.stroke();
-
-  // Toadstools in circle (fairy ring)
-  for (let t=0;t<8;t++) {
-    const ta=(t/8)*Math.PI*2, tr=W*0.08;
-    const tx3=W*0.35+Math.cos(ta)*tr, ty3=H*0.78;
-    ctx.lineWidth=1; ctx.strokeRect(tx3-W*0.01,ty3-W*0.03,W*0.02,W*0.03);
-    ctx.beginPath(); ctx.ellipse(tx3,ty3-W*0.03,W*0.018,W*0.01,0,Math.PI,0); ctx.stroke();
-  }
-}
-
-// =================== SCENE 4: PACKED CITY (DENSE) ===================
-function scene4(ctx, W, H) {
-  bwSetup(ctx, W, H);
-
-  // Many clouds
-  for (let i=0;i<7;i++) doodleCloud(ctx,W*(0.06+i*0.14),H*(0.04+(i%3)*0.03),W*0.062);
-  // Flock of birds
-  for (let i=0;i<15;i++) doodleBird(ctx,W*(0.02+i*0.07),H*(0.03+(i%4)*0.025),W*0.015);
-
-  // 8 tall buildings — every one different
-  const bData = [
-    [0,H*0.04,W*0.14,H*0.68,12,10,4,2],
-    [W*0.13,H*0.1,W*0.12,H*0.62,10,9,3,2],
-    [W*0.24,H*0.06,W*0.11,H*0.66,8,8,3,2],
-    [W*0.34,H*0.18,W*0.1,H*0.54,7,8,3,1],
-    [W*0.43,H*0.04,W*0.13,H*0.68,9,9,4,2],
-    [W*0.55,H*0.12,W*0.11,H*0.6,8,8,3,2],
-    [W*0.65,H*0.08,W*0.12,H*0.64,9,9,3,2],
-    [W*0.76,H*0.15,W*0.24,H*0.57,12,10,4,2],
+  const flowers = [
+    [W*0.35, H*0.72], [W*0.5, H*0.68], [W*0.65, H*0.72],
+    [W*0.78, H*0.70], [W*0.88, H*0.73], [W*0.28, H*0.74]
   ];
-  bData.forEach(([bx,by,bw,bh,wcols,wrows,rw,rh]) => {
-    ctx.lineWidth=1.8; ctx.strokeRect(bx,by,bw,bh);
-    doodleBrick(ctx,bx,by,bw,bh,Math.round(bw/wcols),Math.round(bh/wrows/4));
-    // Windows
-    const ww=bw/(wcols+1)*0.7, wh2=bh/(wrows+1)*0.5;
-    for (let wr=1;wr<=wrows;wr++) for (let wc=1;wc<=wcols/2;wc++) {
-      const wx=bx+bw/((wcols/2)+1)*wc-ww/2, wy=by+bh/(wrows+1)*wr-wh2/2;
-      doodleWindow(ctx,wx,wy,ww,wh2);
-      // Some have AC units
-      if ((wr+wc)%3===0) { ctx.lineWidth=0.7; ctx.strokeRect(wx,wy+wh2,ww,wh2*0.3); }
+  const fColors = ['#ff6b9d','#ffd93d','#ff9843','#9b59b6','#4d96ff','#ff6b9d'];
+  flowers.forEach(([fx, fy], i) => {
+    ctx.strokeStyle = '#4caf50'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(fx, fy); ctx.lineTo(fx, fy + H*0.06); ctx.stroke();
+    for (let p = 0; p < 5; p++) {
+      const a = (p / 5) * Math.PI * 2;
+      const px = fx + Math.cos(a) * W * 0.03;
+      const py = fy + Math.sin(a) * W * 0.03;
+      ctx.fillStyle = fColors[i];
+      ctx.beginPath(); ctx.ellipse(px, py, W*0.018, W*0.012, a, 0, Math.PI*2); ctx.fill();
     }
-    // Rooftop details
-    ctx.lineWidth=1.2;
-    doodleSmoke(ctx,bx+bw*0.25,by,bw*0.06);
-    doodleSmoke(ctx,bx+bw*0.75,by,bw*0.05);
-    // Water tower
-    ctx.strokeRect(bx+bw*0.55,by-bh*0.08,bw*0.2,bh*0.08);
-    ctx.beginPath(); ctx.moveTo(bx+bw*0.6,by-bh*0.08); ctx.lineTo(bx+bw*0.7,by-bh*0.08); ctx.stroke();
-    // Antennas
-    ctx.lineWidth=0.9;
-    ctx.beginPath(); ctx.moveTo(bx+bw*0.15,by); ctx.lineTo(bx+bw*0.15,by-bh*0.06); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(bx+bw*0.15-bw*0.05,by-bh*0.05); ctx.lineTo(bx+bw*0.15+bw*0.05,by-bh*0.05); ctx.stroke();
+    ctx.fillStyle = '#ffd93d';
+    ctx.beginPath(); ctx.arc(fx, fy, W*0.018, 0, Math.PI*2); ctx.fill();
   });
 
-  // Busy road
-  ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(0,H*0.72); ctx.lineTo(W,H*0.72); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0,H*0.92); ctx.lineTo(W,H*0.92); ctx.stroke();
-  // Lane dashes
-  ctx.lineWidth=1.5; ctx.setLineDash([W*0.04,W*0.02]);
-  ctx.beginPath(); ctx.moveTo(0,H*0.81); ctx.lineTo(W,H*0.81); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0,H*0.86); ctx.lineTo(W,H*0.86); ctx.stroke();
-  ctx.setLineDash([]);
-  // Sidewalks
-  ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,H*0.7); ctx.lineTo(W,H*0.7); ctx.stroke();
-  ctx.lineWidth=0.7;
-  for (let tx=W*0.05;tx<W;tx+=W*0.06) { ctx.beginPath(); ctx.moveTo(tx,H*0.7); ctx.lineTo(tx,H*0.72); ctx.stroke(); }
-  // Cobblestones pavement
-  for (let py=H*0.92; py<H; py+=H*0.025)
-    for (let px=0; px<W; px+=W*0.05) {
-      ctx.lineWidth=0.6; ctx.beginPath(); ctx.ellipse(px+W*0.025,py+H*0.012,W*0.022,H*0.01,0,0,Math.PI*2); ctx.stroke();
-    }
+  // Butterflies
+  drawButterfly(ctx, W*0.55, H*0.2, W*0.04);
+  drawButterfly(ctx, W*0.8, H*0.15, W*0.03);
+  drawButterfly(ctx, W*0.35, H*0.4, W*0.025);
 
-  // 5 Cars on road (very detailed)
-  [[W*0.02,H*0.74,W*0.17],[W*0.28,H*0.74,W*0.15],[W*0.55,H*0.76,W*0.16],[W*0.76,H*0.75,W*0.14],
-   [W*0.12,H*0.85,W*0.12],[W*0.45,H*0.84,W*0.13],[W*0.72,H*0.85,W*0.15]].forEach(([cx2,cy2,cw]) => {
-    ctx.lineWidth=1.5; ctx.strokeRect(cx2,cy2,cw,cw*0.42);
-    // Roof
-    ctx.beginPath(); ctx.moveTo(cx2+cw*0.12,cy2); ctx.lineTo(cx2+cw*0.22,cy2-cw*0.32); ctx.lineTo(cx2+cw*0.76,cy2-cw*0.32); ctx.lineTo(cx2+cw*0.88,cy2); ctx.stroke();
-    // Windows
-    ctx.strokeRect(cx2+cw*0.26,cy2-cw*0.29,cw*0.22,cw*0.22); ctx.strokeRect(cx2+cw*0.53,cy2-cw*0.29,cw*0.2,cw*0.22);
-    // Wheels
-    ctx.lineWidth=1.2;
-    [cx2+cw*0.2,cx2+cw*0.8].forEach(wx2 => {
-      ctx.beginPath(); ctx.arc(wx2,cy2+cw*0.42,cw*0.12,0,Math.PI*2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(wx2,cy2+cw*0.42,cw*0.07,0,Math.PI*2); ctx.stroke();
-    });
-    // Headlight/tail
-    ctx.lineWidth=0.8; ctx.strokeRect(cx2+cw*0.9,cy2+cw*0.05,cw*0.05,cw*0.08);
-    ctx.strokeRect(cx2-cw*0.03,cy2+cw*0.05,cw*0.05,cw*0.08);
-  });
+  // Birds
+  drawBird(ctx, W*0.6, H*0.1, W*0.03);
+  drawBird(ctx, W*0.72, H*0.08, W*0.025);
 
-  // People crowd (lots)
-  for (let pi=0;pi<14;pi++) doodlePerson(ctx,W*(0.04+pi*0.07),H*0.7,H*0.072);
-
-  // Street details
-  // Manholes
-  [W*0.15,W*0.45,W*0.75].forEach(mx => {
-    ctx.lineWidth=1; ctx.beginPath(); ctx.ellipse(mx,H*0.82,W*0.025,W*0.01,0,0,Math.PI*2); ctx.stroke();
-    ctx.setLineDash([3,3]); ctx.beginPath(); ctx.arc(mx,H*0.82,W*0.02,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
-  });
-  // Fire hydrant
-  ctx.lineWidth=1.2; ctx.strokeRect(W*0.38,H*0.7,W*0.018,H*0.022);
-  ctx.beginPath(); ctx.ellipse(W*0.389,H*0.7,W*0.014,W*0.008,0,Math.PI*2,0); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.38,H*0.712); ctx.lineTo(W*0.37,H*0.714); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.398,H*0.712); ctx.lineTo(W*0.408,H*0.714); ctx.stroke();
-
-  // Traffic lights (2)
-  [W*0.08,W*0.62].forEach(tlx => {
-    ctx.lineWidth=1.5; ctx.strokeRect(tlx,H*0.5,W*0.035,H*0.12);
-    [H*0.52,H*0.556,H*0.592].forEach(tly => { ctx.beginPath(); ctx.arc(tlx+W*0.0175,tly,W*0.011,0,Math.PI*2); ctx.stroke(); });
-    ctx.lineWidth=1.8; ctx.beginPath(); ctx.moveTo(tlx+W*0.0175,H*0.62); ctx.lineTo(tlx+W*0.0175,H*0.7); ctx.stroke();
-  });
-
-  // Subway entrance
-  ctx.lineWidth=1.5; ctx.strokeRect(W*0.48,H*0.7,W*0.1,H*0.02);
-  ctx.beginPath(); ctx.moveTo(W*0.53,H*0.72); ctx.lineTo(W*0.53,H*0.75); ctx.stroke();
-  ctx.beginPath(); ctx.arc(W*0.53,H*0.7,W*0.01,Math.PI,0); ctx.stroke();
-  ctx.lineWidth=0.9; ctx.fillStyle='#111';
-  ctx.font=`bold ${W*0.018}px sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('M', W*0.53, H*0.71); ctx.fillStyle='#fff';
-
-  // Shop signs
-  ctx.strokeStyle='#111'; ctx.fillStyle='#111';
-  ctx.font=`${W*0.019}px sans-serif`; ctx.textAlign='center';
-  [[W*0.07,H*0.66,'CAFE'],[W*0.37,H*0.65,'BOOKS'],[W*0.69,H*0.66,'PIZZA']].forEach(([sx,sy,st]) => {
-    ctx.lineWidth=1; ctx.strokeRect(sx-W*0.04,sy-H*0.02,W*0.08,H*0.03);
-    ctx.fillText(st,sx,sy); ctx.strokeStyle='#111';
-  });
-
-  // Pigeons (many)
-  for (let pi=0;pi<8;pi++) {
-    const px=W*(0.05+pi*0.12), py=H*(0.71+pi%2*0.01);
-    ctx.lineWidth=0.9; ctx.beginPath(); ctx.ellipse(px,py,7,5,0,0,Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.arc(px+6,py-4,4,0,Math.PI*2); ctx.stroke();
-  }
-}
-
-// =================== SCENE 5: COZY LIBRARY / CAFE (PACKED) ===================
-function scene5(ctx, W, H) {
-  bwSetup(ctx, W, H);
-
-  // Floor & walls
-  ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,H*0.75); ctx.lineTo(W,H*0.75); ctx.stroke();
-  ctx.lineWidth=0.8;
-  // Wooden floor planks
-  for (let fy=H*0.77;fy<H;fy+=H*0.04) { ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(0,fy); ctx.lineTo(W,fy); ctx.stroke(); }
-  for (let fx=0;fx<W;fx+=W*0.14) { ctx.lineWidth=0.6; ctx.beginPath(); ctx.moveTo(fx,H*0.75); ctx.lineTo(fx+(Math.random()>0.5?W*0.06:-W*0.06),H); ctx.stroke(); }
-  // Wood grain dots
-  doodleDots(ctx,0,H*0.75,W,H*0.25,15);
-  // Wainscoting
-  ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(0,H*0.38); ctx.lineTo(W,H*0.38); ctx.stroke();
-  ctx.lineWidth=0.8;
-  for (let wx=W*0.05;wx<W;wx+=W*0.1) { ctx.beginPath(); ctx.moveTo(wx,H*0.38); ctx.lineTo(wx,H*0.75); ctx.stroke(); }
-  for (let wy=H*0.44;wy<H*0.75;wy+=H*0.06) { ctx.beginPath(); ctx.moveTo(0,wy); ctx.lineTo(W,wy); ctx.stroke(); }
-
-  // Two large windows
-  [[W*0.05,H*0.05],[W*0.55,H*0.05]].forEach(([wx,wy]) => {
-    ctx.lineWidth=2.2; ctx.strokeRect(wx,wy,W*0.32,H*0.3);
-    ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.moveTo(wx+W*0.16,wy); ctx.lineTo(wx+W*0.16,wy+H*0.3); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(wx,wy+H*0.15); ctx.lineTo(wx+W*0.32,wy+H*0.15); ctx.stroke();
-    // Detailed curtains
-    ctx.lineWidth=1;
-    for (let fold=0;fold<4;fold++) {
-      const fx2=wx+fold*W*0.08;
-      ctx.beginPath(); ctx.moveTo(fx2,wy); ctx.quadraticCurveTo(fx2+W*0.04,wy+H*0.06,fx2+W*0.08,wy); ctx.stroke();
-    }
-    // View through window — outside scene
-    ctx.lineWidth=0.7;
-    for (let cl=0;cl<3;cl++) doodleCloud(ctx,wx+W*0.04+cl*W*0.1,wy+H*0.04+cl*H*0.02,W*0.04);
-    ctx.beginPath(); ctx.moveTo(wx,wy+H*0.22); ctx.lineTo(wx+W*0.32,wy+H*0.22); ctx.stroke();
-    // Simple outside buildings
-    [W*0.04,W*0.12,W*0.2].forEach(bx2 => { ctx.strokeRect(wx+bx2,wy+H*0.07,W*0.06,H*0.15); });
-  });
-
-  // PACKED bookshelf (right wall, full height)
-  ctx.lineWidth=2; ctx.strokeRect(W*0.72,H*0.01,W*0.28,H*0.74);
-  ctx.lineWidth=1;
-  [H*0.15,H*0.28,H*0.42,H*0.55,H*0.65].forEach(sy => { ctx.beginPath(); ctx.moveTo(W*0.72,sy); ctx.lineTo(W,sy); ctx.stroke(); });
-  // Books — many, all different heights
-  let bookX = W*0.73;
-  const shelves = [H*0.01,H*0.15,H*0.28,H*0.42,H*0.55,H*0.65];
-  const shelfH = [H*0.14,H*0.13,H*0.14,H*0.13,H*0.1,H*0.09];
-  shelves.forEach((sy,si) => {
-    let bx2=W*0.73;
-    while (bx2 < W-W*0.015) {
-      const bw2=W*(0.018+Math.random()*0.012), bh3=shelfH[si]*(0.6+Math.random()*0.35);
-      ctx.lineWidth=1; ctx.strokeRect(bx2,sy+shelfH[si]-bh3,bw2,bh3);
-      // Book title line
-      ctx.lineWidth=0.4; ctx.beginPath(); ctx.moveTo(bx2+bw2*0.3,sy+shelfH[si]-bh3+bh3*0.2); ctx.lineTo(bx2+bw2*0.3,sy+shelfH[si]-bh3*0.1); ctx.stroke();
-      // Bookend every 5
-      if (Math.round((bx2-W*0.73)/W*100)%5===0) { ctx.lineWidth=1.5; ctx.strokeRect(bx2,sy+shelfH[si]-shelfH[si]*0.8,bw2*0.5,shelfH[si]*0.8); }
-      bx2+=bw2+1;
-    }
-  });
-  // Decorative items on shelves
-  // Plant on shelf
-  ctx.lineWidth=1; ctx.strokeRect(W*0.74,H*0.26,W*0.025,W*0.02);
-  for (let l=0;l<4;l++) { const la=(l/4)*Math.PI*2; ctx.beginPath(); ctx.ellipse(W*0.752+Math.cos(la)*W*0.02,H*0.25+Math.sin(la)*W*0.012,W*0.018,W*0.01,la,0,Math.PI*2); ctx.stroke(); }
-  // Hourglass
-  ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(W*0.88,H*0.52); ctx.lineTo(W*0.9,H*0.52); ctx.lineTo(W*0.886,H*0.55); ctx.lineTo(W*0.9,H*0.58); ctx.lineTo(W*0.88,H*0.58); ctx.lineTo(W*0.894,H*0.55); ctx.closePath(); ctx.stroke();
-  ctx.lineWidth=0.6; ctx.setLineDash([1,2]);
-  ctx.beginPath(); ctx.moveTo(W*0.886,H*0.55); ctx.lineTo(W*0.886,H*0.58); ctx.stroke(); ctx.setLineDash([]);
-  // Globe
-  ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(W*0.95,H*0.41,W*0.02,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(W*0.95,H*0.41,W*0.02,W*0.008,0,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.93,H*0.41); ctx.lineTo(W*0.97,H*0.41); ctx.stroke();
-
-  // Main table (centre)
-  ctx.lineWidth=2.2; ctx.beginPath(); ctx.moveTo(W*0.08,H*0.6); ctx.lineTo(W*0.68,H*0.6); ctx.stroke();
-  ctx.lineWidth=1.5;
-  [W*0.15,W*0.6].forEach(lx => { ctx.beginPath(); ctx.moveTo(lx,H*0.6); ctx.lineTo(lx,H*0.75); ctx.stroke(); });
-  ctx.beginPath(); ctx.moveTo(W*0.08,H*0.62); ctx.lineTo(W*0.68,H*0.62); ctx.stroke();
-
-  // Coffee mug (detailed steam)
-  ctx.lineWidth=1.5; ctx.strokeRect(W*0.11,H*0.5,W*0.09,H*0.1);
-  ctx.beginPath(); ctx.arc(W*0.155,H*0.5,W*0.04,Math.PI,0); ctx.stroke(); // rim arc
-  ctx.beginPath(); ctx.moveTo(W*0.2,H*0.56); ctx.quadraticCurveTo(W*0.235,H*0.56,W*0.235,H*0.61); ctx.lineTo(W*0.2,H*0.6); ctx.stroke(); // handle
-  // Coffee surface rings
-  ctx.lineWidth=0.7;
-  ctx.beginPath(); ctx.ellipse(W*0.155,H*0.53,W*0.03,W*0.01,0,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(W*0.155,H*0.53,W*0.015,W*0.005,0,0,Math.PI*2); ctx.stroke();
-  // Steam curls
-  ctx.lineWidth=0.9;
-  [W*0.13,W*0.155,W*0.18].forEach((sx,si) => {
-    ctx.beginPath(); ctx.moveTo(sx,H*0.5);
-    ctx.bezierCurveTo(sx+W*0.015,H*0.46,sx-W*0.015,H*0.43,sx+W*0.01,H*0.4);
-    ctx.bezierCurveTo(sx+W*0.02,H*0.37,sx-W*0.01,H*0.35,sx,H*0.33);
+  // Sun
+  ctx.fillStyle = '#ffd93d';
+  ctx.beginPath(); ctx.arc(W*0.85, H*0.1, W*0.07, 0, Math.PI*2); ctx.fill();
+  for (let i = 0; i < 8; i++) {
+    const a = (i/8)*Math.PI*2;
+    ctx.strokeStyle = '#ffd93d'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(W*0.85 + Math.cos(a)*W*0.09, H*0.1 + Math.sin(a)*W*0.09);
+    ctx.lineTo(W*0.85 + Math.cos(a)*W*0.12, H*0.1 + Math.sin(a)*W*0.12);
     ctx.stroke();
-  });
-
-  // Slice of cake (detailed)
-  ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(W*0.35,H*0.5); ctx.lineTo(W*0.27,H*0.6); ctx.lineTo(W*0.47,H*0.6); ctx.closePath(); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.27,H*0.53); ctx.lineTo(W*0.47,H*0.53); ctx.stroke(); // layer
-  ctx.beginPath(); ctx.moveTo(W*0.29,H*0.545); ctx.lineTo(W*0.46,H*0.545); ctx.stroke();
-  // Frosting drips
-  ctx.lineWidth=0.9;
-  [W*0.3,W*0.34,W*0.38,W*0.42,W*0.46].forEach(dx => {
-    ctx.beginPath(); ctx.moveTo(dx,H*0.5); ctx.lineTo(dx+W*0.005,H*0.522); ctx.arc(dx+W*0.005,H*0.527,W*0.006,Math.PI*1.5,Math.PI*0.5); ctx.stroke();
-  });
-  // Cherry on top
-  ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(W*0.35,H*0.487,W*0.01,0,Math.PI*2); ctx.stroke();
-  ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(W*0.35,H*0.477); ctx.lineTo(W*0.36,H*0.465); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.36,H*0.465); ctx.lineTo(W*0.365,H*0.47); ctx.stroke();
-
-  // Open book
-  ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.moveTo(W*0.48,H*0.6); ctx.lineTo(W*0.48,H*0.52); ctx.quadraticCurveTo(W*0.4,H*0.51,W*0.38,H*0.6); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.48,H*0.6); ctx.lineTo(W*0.48,H*0.52); ctx.quadraticCurveTo(W*0.56,H*0.51,W*0.58,H*0.6); ctx.stroke();
-  // Text lines
-  ctx.lineWidth=0.5;
-  for (let tl=0;tl<6;tl++) {
-    const ty2=H*0.535+tl*H*0.01;
-    ctx.beginPath(); ctx.moveTo(W*0.4,ty2); ctx.lineTo(W*0.472,ty2-tl*H*0.002); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(W*0.488,ty2); ctx.lineTo(W*0.555,ty2-tl*H*0.002); ctx.stroke();
   }
 
-  // Two chairs
-  [[W*0.17,H*0.71],[W*0.55,H*0.71]].forEach(([cx2,cy2]) => {
-    ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.moveTo(cx2,cy2); ctx.lineTo(cx2+W*0.1,cy2); ctx.stroke(); // seat
-    ctx.beginPath(); ctx.moveTo(cx2,cy2-H*0.1); ctx.lineTo(cx2+W*0.1,cy2-H*0.1); ctx.stroke(); // back
-    ctx.beginPath(); ctx.moveTo(cx2,cy2); ctx.lineTo(cx2,cy2-H*0.1); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx2+W*0.1,cy2); ctx.lineTo(cx2+W*0.1,cy2-H*0.1); ctx.stroke();
-    [cx2+W*0.02,cx2+W*0.08].forEach(lx2 => { ctx.beginPath(); ctx.moveTo(lx2,cy2); ctx.lineTo(lx2,H*0.75); ctx.stroke(); });
-  });
+  // Clouds
+  drawCloud(ctx, W*0.2, H*0.08, W*0.12);
+  drawCloud(ctx, W*0.5, H*0.06, W*0.1);
 
-  // Hanging lights string
-  doodleRope(ctx,0,H*0.09,W,H*0.09,12);
-  for (let li=0;li<10;li++) {
-    const lx=W*(0.05+li*0.1), ly=H*0.09+Math.abs(Math.sin(li*0.7))*H*0.03+H*0.015;
-    ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(lx,H*0.09+H*0.02); ctx.lineTo(lx,ly); ctx.stroke();
-    doodleLantern(ctx,lx,ly,W*0.018);
-  }
+  // House
+  ctx.fillStyle = '#ef9a9a'; ctx.fillRect(W*0.62, H*0.52, W*0.2, H*0.23);
+  ctx.fillStyle = '#8B7355';
+  ctx.beginPath(); ctx.moveTo(W*0.6, H*0.52); ctx.lineTo(W*0.72, H*0.38); ctx.lineTo(W*0.84, H*0.52); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#64b5f6'; ctx.fillRect(W*0.67, H*0.56, W*0.07, W*0.07);
+  ctx.fillStyle = '#795548'; ctx.fillRect(W*0.69, H*0.65, W*0.06, H*0.1);
+  ctx.fillStyle = '#ffd93d'; ctx.beginPath(); ctx.arc(W*0.735, H*0.7, 3, 0, Math.PI*2); ctx.fill();
 
-  // Clock on wall
-  ctx.lineWidth=2; ctx.beginPath(); ctx.arc(W*0.37,H*0.22,W*0.06,0,Math.PI*2); ctx.stroke();
-  ctx.lineWidth=1;
-  for (let hm=0;hm<12;hm++) {
-    const ha=(hm/12)*Math.PI*2, hl=W*0.05;
-    ctx.lineWidth=hm%3===0?1.5:0.8;
-    ctx.beginPath(); ctx.moveTo(W*0.37+Math.cos(ha)*(hl-W*0.008),H*0.22+Math.sin(ha)*(hl-W*0.008));
-    ctx.lineTo(W*0.37+Math.cos(ha)*hl,H*0.22+Math.sin(ha)*hl); ctx.stroke();
-  }
-  ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(W*0.37,H*0.22); ctx.lineTo(W*0.37,H*0.175); ctx.stroke();
-  ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(W*0.37,H*0.22); ctx.lineTo(W*0.40,H*0.226); ctx.stroke();
-
-  // Potted plants (2 large)
-  [[W*0.02,H*0.6],[W*0.68,H*0.58]].forEach(([px,py]) => {
-    ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(px-W*0.03,py+H*0.1); ctx.lineTo(px-W*0.022,py); ctx.lineTo(px+W*0.022,py); ctx.lineTo(px+W*0.03,py+H*0.1); ctx.closePath(); ctx.stroke();
-    doodleHatch(ctx,px-W*0.03,py,W*0.06,H*0.1,8);
-    // Leaves (detailed monstera-style)
-    for (let l=0;l<7;l++) {
-      const la=(l/7)*Math.PI*2-Math.PI/2, lr=W*0.06;
-      ctx.lineWidth=1;
-      ctx.beginPath(); ctx.ellipse(px+Math.cos(la)*lr,py-W*0.01+Math.sin(la)*lr*0.5,W*0.04,W*0.022,la,0,Math.PI*2); ctx.stroke();
-      // Leaf veins
-      ctx.lineWidth=0.4;
-      const lx2=px+Math.cos(la)*lr, ly2=py-W*0.01+Math.sin(la)*lr*0.5;
-      ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(lx2,ly2); ctx.stroke();
-    }
-  });
+  // Mushrooms
+  drawMushroom(ctx, W*0.42, H*0.73, W*0.03);
+  drawMushroom(ctx, W*0.92, H*0.72, W*0.025);
 }
 
-// =================== SCENE 6: OUTER SPACE (PACKED) ===================
+function scene2(ctx, W, H) {
+  // Underwater scene
+  ctx.fillStyle = '#1a237e'; ctx.fillRect(0, 0, W, H);
+  
+  // Water gradient overlay
+  const wg = ctx.createLinearGradient(0,0,0,H);
+  wg.addColorStop(0, 'rgba(100,181,246,0.4)');
+  wg.addColorStop(1, 'rgba(13,71,161,0.6)');
+  ctx.fillStyle = wg; ctx.fillRect(0,0,W,H);
+
+  // Bubbles
+  for (let i = 0; i < 20; i++) {
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(Math.random()*W, Math.random()*H, 3+Math.random()*8, 0, Math.PI*2);
+    ctx.stroke();
+  }
+
+  // Seabed
+  ctx.fillStyle = '#e8c97a'; ctx.fillRect(0, H*0.8, W, H*0.2);
+  // Wavy seabed
+  ctx.fillStyle = '#d4a843';
+  ctx.beginPath(); ctx.moveTo(0, H*0.78);
+  for (let x = 0; x <= W; x += 20) ctx.quadraticCurveTo(x+10, H*0.76, x+20, H*0.78);
+  ctx.lineTo(W,H); ctx.lineTo(0,H); ctx.closePath(); ctx.fill();
+
+  // Corals
+  drawCoral(ctx, W*0.1, H*0.78, '#ef5350', H*0.15);
+  drawCoral(ctx, W*0.25, H*0.8, '#ff9800', H*0.12);
+  drawCoral(ctx, W*0.75, H*0.79, '#ab47bc', H*0.14);
+  drawCoral(ctx, W*0.88, H*0.78, '#26c6da', H*0.13);
+
+  // Seaweed
+  for (let sx of [W*0.35, W*0.5, W*0.62]) {
+    ctx.strokeStyle = '#66bb6a'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(sx, H*0.8);
+    for (let y = H*0.8; y > H*0.45; y -= 20) {
+      const wave = Math.sin((H*0.8-y)*0.1)*15;
+      ctx.quadraticCurveTo(sx+wave, y-10, sx-wave, y-20);
+    }
+    ctx.stroke();
+  }
+
+  // Fish
+  drawFish(ctx, W*0.55, H*0.25, W*0.09, '#ff9843', 1);
+  drawFish(ctx, W*0.2, H*0.4, W*0.07, '#ff6b9d', -1);
+  drawFish(ctx, W*0.7, H*0.5, W*0.06, '#ffd93d', 1);
+  drawFish(ctx, W*0.4, H*0.6, W*0.05, '#9b59b6', -1);
+  drawFish(ctx, W*0.85, H*0.3, W*0.08, '#4d96ff', 1);
+
+  // Jellyfish
+  drawJellyfish(ctx, W*0.15, H*0.2, W*0.06);
+  drawJellyfish(ctx, W*0.75, H*0.15, W*0.05);
+
+  // Starfish
+  drawStarfish(ctx, W*0.15, H*0.85, W*0.04);
+  drawStarfish(ctx, W*0.6, H*0.87, W*0.035);
+  drawStarfish(ctx, W*0.88, H*0.86, W*0.04);
+
+  // Treasure chest
+  ctx.fillStyle = '#8B6914'; ctx.fillRect(W*0.4, H*0.82, W*0.12, H*0.08);
+  ctx.strokeStyle = '#5D4037'; ctx.lineWidth = 1.5;
+  ctx.strokeRect(W*0.4, H*0.82, W*0.12, H*0.08);
+  ctx.fillStyle = '#ffd93d'; ctx.fillRect(W*0.44, H*0.85, W*0.04, H*0.025);
+}
+
+function scene3(ctx, W, H) {
+  // Forest / enchanted woods
+  ctx.fillStyle = '#1b5e20'; ctx.fillRect(0,0,W,H);
+  const fg = ctx.createLinearGradient(0,0,0,H);
+  fg.addColorStop(0,'rgba(46,125,50,0.7)');
+  fg.addColorStop(1,'rgba(27,94,32,0.9)');
+  ctx.fillStyle=fg; ctx.fillRect(0,0,W,H);
+
+  // Moon
+  ctx.fillStyle = '#fff9c4';
+  ctx.beginPath(); ctx.arc(W*0.8, H*0.1, W*0.07, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#f0e68c'; ctx.lineWidth = 0;
+  for (let s = 0; s < 15; s++) {
+    const sx = Math.random()*W, sy = Math.random()*(H*0.5);
+    ctx.beginPath(); ctx.arc(sx, sy, 1+Math.random()*2, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(255,255,255,'+( 0.4+Math.random()*0.6)+')';
+    ctx.fill();
+  }
+
+  // Trees
+  const treePositions = [0.05,0.15,0.25,0.35,0.55,0.65,0.78,0.88,0.95];
+  treePositions.forEach((tx, i) => {
+    const th = H*(0.35 + (i%3)*0.1);
+    ctx.fillStyle = '#4e342e';
+    ctx.fillRect(W*tx - 5, H - th - H*0.05, 10, th + H*0.05);
+    ctx.fillStyle = i%2===0 ? '#2e7d32' : '#388e3c';
+    ctx.beginPath(); ctx.arc(W*tx, H-th, W*0.08, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#43a047';
+    ctx.beginPath(); ctx.arc(W*(tx-0.02), H-th-W*0.04, W*0.06, 0, Math.PI*2); ctx.fill();
+  });
+
+  // Mushrooms on ground
+  ctx.fillStyle = '#795548'; ctx.fillRect(0, H*0.85, W, H*0.15);
+  drawMushroom(ctx, W*0.3, H*0.85, W*0.045, '#ef5350');
+  drawMushroom(ctx, W*0.5, H*0.86, W*0.04, '#ff9800');
+  drawMushroom(ctx, W*0.7, H*0.84, W*0.05, '#9b59b6');
+
+  // Fireflies
+  for (let f = 0; f < 12; f++) {
+    ctx.fillStyle = `rgba(255,235,59,${0.4+Math.random()*0.6})`;
+    ctx.beginPath(); ctx.arc(Math.random()*W, H*0.2+Math.random()*H*0.6, 2+Math.random()*3, 0, Math.PI*2); ctx.fill();
+  }
+
+  // Owl
+  drawOwl(ctx, W*0.45, H*0.38, W*0.05);
+
+  // Fox
+  drawFox(ctx, W*0.6, H*0.77, W*0.06);
+
+  // Deer silhouette
+  drawDeer(ctx, W*0.2, H*0.7, W*0.07);
+
+  // Fairy
+  drawFairy(ctx, W*0.72, H*0.22, W*0.04);
+}
+
+function scene4(ctx, W, H) {
+  // Busy city street scene
+  ctx.fillStyle = '#90a4ae'; ctx.fillRect(0,0,W,H*0.65);
+  ctx.fillStyle = '#607d8b'; ctx.fillRect(0,H*0.65,W,H*0.35);
+
+  // Road
+  ctx.fillStyle = '#455a64'; ctx.fillRect(0, H*0.7, W, H*0.18);
+  ctx.fillStyle = '#ffd93d';
+  for (let x = 0; x < W; x += W*0.12) {
+    ctx.fillRect(x, H*0.786, W*0.07, H*0.012);
+  }
+
+  // Buildings
+  const buildings = [
+    [0, H*0.05, W*0.18, H*0.7, '#78909c'],
+    [W*0.17, H*0.15, W*0.15, H*0.6, '#546e7a'],
+    [W*0.31, H*0.08, W*0.13, H*0.67, '#90a4ae'],
+    [W*0.43, H*0.2, W*0.12, H*0.55, '#607d8b'],
+    [W*0.54, H*0.05, W*0.16, H*0.7, '#78909c'],
+    [W*0.69, H*0.12, W*0.14, H*0.63, '#546e7a'],
+    [W*0.82, H*0.18, W*0.18, H*0.57, '#90a4ae'],
+  ];
+  buildings.forEach(([bx,by,bw,bh,bc]) => {
+    ctx.fillStyle = bc; ctx.fillRect(bx, by, bw, bh);
+    ctx.strokeStyle = 'rgba(0,0,0,0.2)'; ctx.lineWidth = 1;
+    ctx.strokeRect(bx, by, bw, bh);
+    // Windows
+    for (let wy = by + bh*0.08; wy < H*0.65; wy += bh*0.1) {
+      for (let wx = bx + bw*0.1; wx < bx+bw-bw*0.1; wx += bw*0.3) {
+        ctx.fillStyle = Math.random()>0.3 ? '#ffd93d' : '#37474f';
+        ctx.fillRect(wx, wy, bw*0.2, bh*0.06);
+      }
+    }
+  });
+
+  // Street lamps
+  [W*0.15, W*0.4, W*0.65, W*0.88].forEach(lx => {
+    ctx.strokeStyle = '#37474f'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(lx, H*0.88); ctx.lineTo(lx, H*0.6); ctx.stroke();
+    ctx.fillStyle = '#ffd93d';
+    ctx.beginPath(); ctx.arc(lx, H*0.6, 6, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,217,61,0.15)';
+    ctx.beginPath(); ctx.arc(lx, H*0.6, 18, 0, Math.PI*2); ctx.fill();
+  });
+
+  // Cars
+  drawCar(ctx, W*0.05, H*0.72, W*0.15, '#ef5350', 1);
+  drawCar(ctx, W*0.5, H*0.73, W*0.14, '#4d96ff', 1);
+  drawCar(ctx, W*0.75, H*0.72, W*0.13, '#ffd93d', -1);
+
+  // People
+  drawPerson(ctx, W*0.28, H*0.67, H*0.06);
+  drawPerson(ctx, W*0.42, H*0.67, H*0.065);
+  drawPerson(ctx, W*0.6, H*0.67, H*0.06);
+
+  // Signs
+  ctx.fillStyle = '#ff6b9d'; ctx.fillRect(W*0.35, H*0.3, W*0.1, H*0.04);
+  ctx.fillStyle = '#fff'; ctx.font = `${W*0.022}px Poppins,sans-serif`;
+  ctx.textAlign = 'center'; ctx.fillText('SALE!', W*0.4, H*0.325);
+
+  // Pigeons on road
+  for (let pi = 0; pi < 5; pi++) {
+    const px = W*(0.1 + pi*0.18), py = H*0.69;
+    ctx.fillStyle = '#90a4ae';
+    ctx.beginPath(); ctx.ellipse(px, py, 6, 4, 0, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(px+5, py-3, 3, 0, Math.PI*2); ctx.fill();
+  }
+}
+
+function scene5(ctx, W, H) {
+  // Cozy cafe / bakery interior
+  ctx.fillStyle = '#fbe9e7'; ctx.fillRect(0,0,W,H);
+
+  // Walls / floor
+  ctx.fillStyle = '#efebe9'; ctx.fillRect(0, 0, W, H*0.75);
+  ctx.fillStyle = '#bcaaa4'; ctx.fillRect(0, H*0.75, W, H*0.25);
+  // Floor tiles
+  ctx.strokeStyle = '#a1887f'; ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += W*0.15) ctx.beginPath(), ctx.moveTo(x,H*0.75), ctx.lineTo(x,H), ctx.stroke();
+  for (let y = H*0.75; y < H; y += H*0.06) ctx.beginPath(), ctx.moveTo(0,y), ctx.lineTo(W,y), ctx.stroke();
+
+  // Windows
+  ctx.fillStyle = '#b3e5fc';
+  ctx.fillRect(W*0.1, H*0.05, W*0.3, H*0.25);
+  ctx.fillRect(W*0.6, H*0.05, W*0.3, H*0.25);
+  ctx.strokeStyle = '#8d6e63'; ctx.lineWidth = 3;
+  ctx.strokeRect(W*0.1, H*0.05, W*0.3, H*0.25);
+  ctx.strokeRect(W*0.6, H*0.05, W*0.3, H*0.25);
+  // Window cross
+  ctx.beginPath(); ctx.moveTo(W*0.25,H*0.05); ctx.lineTo(W*0.25,H*0.3); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W*0.1,H*0.175); ctx.lineTo(W*0.4,H*0.175); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W*0.75,H*0.05); ctx.lineTo(W*0.75,H*0.3); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W*0.6,H*0.175); ctx.lineTo(W*0.9,H*0.175); ctx.stroke();
+
+  // Curtains
+  ctx.fillStyle = 'rgba(255,107,157,0.4)';
+  ctx.beginPath(); ctx.moveTo(W*0.1,H*0.05); ctx.quadraticCurveTo(W*0.16,H*0.15,W*0.22,H*0.05); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(W*0.28,H*0.05); ctx.quadraticCurveTo(W*0.35,H*0.15,W*0.4,H*0.05); ctx.closePath(); ctx.fill();
+
+  // Bookshelf
+  ctx.fillStyle = '#8d6e63'; ctx.fillRect(W*0.73, H*0.35, W*0.22, H*0.35);
+  const bookColors = ['#ef5350','#4d96ff','#ffd93d','#66bb6a','#9b59b6','#ff9843','#ff6b9d','#4d96ff','#ffd93d'];
+  bookColors.forEach((bc, i) => {
+    ctx.fillStyle = bc;
+    ctx.fillRect(W*0.74 + i*(W*0.02+2), H*0.37, W*0.02, H*0.25);
+    ctx.strokeStyle = darkenColor(bc, 30); ctx.lineWidth = 0.5;
+    ctx.strokeRect(W*0.74 + i*(W*0.02+2), H*0.37, W*0.02, H*0.25);
+  });
+
+  // Table with coffee and cake
+  ctx.fillStyle = '#a1887f'; ctx.fillRect(W*0.2, H*0.6, W*0.45, H*0.04);
+  ctx.fillStyle = '#8d6e63'; ctx.fillRect(W*0.3, H*0.64, W*0.05, H*0.12);
+  ctx.fillRect(W*0.45, H*0.64, W*0.05, H*0.12);
+  // Cups
+  ctx.fillStyle = '#fff'; ctx.fillRect(W*0.24, H*0.54, W*0.07, H*0.07);
+  ctx.strokeStyle = '#8d6e63'; ctx.lineWidth = 1.5; ctx.strokeRect(W*0.24, H*0.54, W*0.07, H*0.07);
+  ctx.fillStyle = '#6d4c41'; ctx.fillRect(W*0.25, H*0.55, W*0.05, H*0.04);
+  // Cake
+  ctx.fillStyle = '#ffcc80'; ctx.fillRect(W*0.48, H*0.52, W*0.1, H*0.09);
+  ctx.fillStyle = '#ff6b9d'; ctx.fillRect(W*0.48, H*0.52, W*0.1, H*0.02);
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(W*0.53,H*0.495,4,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#ffd93d'; ctx.fillRect(W*0.525,H*0.46,2,H*0.04);
+
+  // Plants
+  drawPlant(ctx, W*0.05, H*0.62, W*0.07);
+  drawPlant(ctx, W*0.88, H*0.6, W*0.06);
+  
+  // Hanging lights
+  for (let lx = W*0.1; lx < W; lx += W*0.2) {
+    ctx.strokeStyle = '#8d6e63'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, H*0.12); ctx.stroke();
+    ctx.fillStyle = '#ffd93d';
+    ctx.beginPath(); ctx.arc(lx, H*0.12, 5, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,217,61,0.2)';
+    ctx.beginPath(); ctx.arc(lx, H*0.12, 14, 0, Math.PI*2); ctx.fill();
+  }
+}
+
 function scene6(ctx, W, H) {
-  bwSetup(ctx, W, H);
-
-  // Stars — many sizes, cross sparkles
-  for (let s=0; s<80; s++) {
-    const sx=(s*W*0.013+W*0.02)%W, sy=(s*H*0.017+H*0.01)%H;
-    const ss=[1,1.2,1.8,2.5,3][s%5];
-    ctx.lineWidth=0.8; ctx.beginPath(); ctx.arc(sx,sy,ss,0,Math.PI*2); ctx.stroke();
-    if(ss>2) doodleStars(ctx,sx,sy,ss*2.5,4);
+  // Space scene
+  ctx.fillStyle = '#0d0520'; ctx.fillRect(0,0,W,H);
+  // Stars
+  for (let s = 0; s < 80; s++) {
+    const sx = Math.random()*W, sy = Math.random()*H;
+    const ss = Math.random()*2.5;
+    ctx.fillStyle = `rgba(255,255,255,${0.3+Math.random()*0.7})`;
+    ctx.beginPath(); ctx.arc(sx,sy,ss,0,Math.PI*2); ctx.fill();
   }
+  // Nebula
+  const nb = ctx.createRadialGradient(W*0.3,H*0.3,0,W*0.3,H*0.3,W*0.4);
+  nb.addColorStop(0,'rgba(155,89,182,0.3)');
+  nb.addColorStop(0.5,'rgba(255,107,157,0.15)');
+  nb.addColorStop(1,'transparent');
+  ctx.fillStyle=nb; ctx.fillRect(0,0,W,H);
 
-  // Milky way band — many dotted arcs
-  for (let r=0;r<5;r++) {
-    ctx.lineWidth=0.4+r*0.1; ctx.setLineDash([2+r,6-r]);
-    ctx.beginPath(); ctx.ellipse(W*0.5,H*1.2,W*(0.5+r*0.08),H*(0.8+r*0.06),0.2,Math.PI*1.05,Math.PI*1.95); ctx.stroke();
-  }
-  ctx.setLineDash([]);
+  // Planets
+  drawPlanet(ctx, W*0.75, H*0.18, W*0.1, '#4d96ff');
+  drawPlanet(ctx, W*0.2, H*0.35, W*0.06, '#ff9843');
+  drawPlanet(ctx, W*0.85, H*0.55, W*0.05, '#9b59b6');
 
-  // Saturn (large, detailed)
-  ctx.lineWidth=2.2; ctx.beginPath(); ctx.arc(W*0.74,H*0.17,W*0.09,0,Math.PI*2); ctx.stroke();
-  // Bands on planet
-  ctx.lineWidth=0.8;
-  [-W*0.04,-W*0.015,W*0.015,W*0.04].forEach(dy => {
-    ctx.beginPath(); ctx.arc(W*0.74,H*0.17,W*0.09,Math.asin(dy/W*11.1)||0,Math.PI-(Math.asin(dy/W*11.1)||0)); ctx.stroke();
-  });
-  // Ring system (3 rings)
-  [W*0.145,W*0.165,W*0.185].forEach(rx => {
-    ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.ellipse(W*0.74,H*0.17,rx,rx*0.25,0.15,0,Math.PI*2); ctx.stroke();
-  });
-  // Moon orbiting
-  ctx.lineWidth=0.8; ctx.setLineDash([3,5]); ctx.beginPath(); ctx.ellipse(W*0.74,H*0.17,W*0.25,W*0.08,0.15,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
-  ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(W*0.9,H*0.1,W*0.022,0,Math.PI*2); ctx.stroke();
+  // Rocket
+  drawRocket(ctx, W*0.5, H*0.25, W*0.06);
 
-  // Earth-like planet (left)
-  ctx.lineWidth=2; ctx.beginPath(); ctx.arc(W*0.2,H*0.35,W*0.07,0,Math.PI*2); ctx.stroke();
-  // Continents (blob shapes)
-  ctx.lineWidth=1;
-  [[W*0.185,H*0.32,W*0.025,H*0.02],[W*0.215,H*0.36,W*0.03,H*0.025],[W*0.2,H*0.4,W*0.02,H*0.015]].forEach(([bx,by,bw2,bh2]) => {
-    ctx.beginPath(); ctx.ellipse(bx,by,bw2,bh2,Math.random(),0,Math.PI*2); ctx.stroke();
-  });
-  // Orbit ring
-  ctx.lineWidth=0.8; ctx.setLineDash([2,4]); ctx.beginPath(); ctx.ellipse(W*0.2,H*0.35,W*0.13,W*0.04,0.3,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
-  // Small moon
-  ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(W*0.1,H*0.3,W*0.018,0,Math.PI*2); ctx.stroke();
-  ctx.lineWidth=0.6; [[W*0.094,H*0.293,W*0.005],[W*0.107,H*0.307,W*0.004]].forEach(([cx2,cy2,cr2]) => { ctx.beginPath(); ctx.arc(cx2,cy2,cr2,0,Math.PI*2); ctx.stroke(); });
+  // Astronaut
+  drawAstronaut(ctx, W*0.2, H*0.7, W*0.09);
 
-  // Small red planet (mid right)
-  ctx.lineWidth=1.8; ctx.beginPath(); ctx.arc(W*0.88,H*0.52,W*0.048,0,Math.PI*2); ctx.stroke();
-  // Canyon stripes
-  ctx.lineWidth=0.7;
-  [H*0.505,H*0.52,H*0.535].forEach(ly => { ctx.beginPath(); ctx.arc(W*0.88,H*0.52,W*0.048,Math.asin((ly-H*0.52)/(W*0.048))||0,Math.PI-(Math.asin((ly-H*0.52)/(W*0.048))||0)); ctx.stroke(); });
+  // Aliens
+  drawAlien(ctx, W*0.65, H*0.6, W*0.055, '#6bcb77');
+  drawAlien(ctx, W*0.45, H*0.8, W*0.045, '#ff9843');
 
-  // Moon surface (large, bottom)
-  ctx.lineWidth=2.5; ctx.beginPath(); ctx.arc(W*0.5,H*0.9,W*0.2,0,Math.PI*2); ctx.stroke();
-  // Detailed craters
-  [[W*0.44,H*0.85,W*0.028],[W*0.56,H*0.88,W*0.022],[W*0.48,H*0.92,W*0.016],[W*0.53,H*0.82,W*0.012],[W*0.4,H*0.9,W*0.009]].forEach(([cx2,cy2,cr2]) => {
-    ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(cx2,cy2,cr2,0,Math.PI*2); ctx.stroke();
-    ctx.lineWidth=0.6; ctx.beginPath(); ctx.arc(cx2-cr2*0.3,cy2-cr2*0.3,cr2*0.3,0,Math.PI*2); ctx.stroke();
-    ctx.lineWidth=0.4; doodleHatch(ctx,cx2-cr2,cy2-cr2,cr2*2,cr2*2,6,Math.PI/3);
-  });
-  // Rocks on moon
-  [[W*0.34,H*0.89],[W*0.62,H*0.91],[W*0.42,H*0.94],[W*0.58,H*0.96]].forEach(([rx,ry]) => {
-    ctx.lineWidth=1; ctx.beginPath(); ctx.ellipse(rx,ry,W*0.018,W*0.01,Math.random()*0.5,0,Math.PI*2); ctx.stroke();
-  });
-
-  // Rocket ship (detailed)
-  ctx.lineWidth=1.8;
-  const rx=W*0.5, ry=H*0.25;
-  ctx.beginPath(); ctx.moveTo(rx,ry-W*0.1); ctx.lineTo(rx-W*0.035,ry+W*0.02); ctx.lineTo(rx+W*0.035,ry+W*0.02); ctx.closePath(); ctx.stroke();
-  ctx.strokeRect(rx-W*0.035,ry+W*0.02,W*0.07,W*0.055);
-  // Fins
-  ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.moveTo(rx-W*0.035,ry+W*0.055); ctx.lineTo(rx-W*0.065,ry+W*0.12); ctx.lineTo(rx-W*0.02,ry+W*0.075); ctx.closePath(); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(rx+W*0.035,ry+W*0.055); ctx.lineTo(rx+W*0.065,ry+W*0.12); ctx.lineTo(rx+W*0.02,ry+W*0.075); ctx.closePath(); ctx.stroke();
-  // Porthole
-  ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(rx,ry-W*0.015,W*0.02,0,Math.PI*2); ctx.stroke();
-  ctx.lineWidth=0.8; ctx.beginPath(); ctx.arc(rx,ry-W*0.015,W*0.013,0,Math.PI*2); ctx.stroke();
-  // Rivets
-  ctx.lineWidth=0.6;
-  [[-W*0.025,W*0.032],[W*0.025,W*0.032],[-W*0.025,W*0.05],[W*0.025,W*0.05]].forEach(([dx,dy]) => { ctx.beginPath(); ctx.arc(rx+dx,ry+dy,2,0,Math.PI*2); ctx.stroke(); });
-  // Exhaust flame (jagged)
-  ctx.lineWidth=0.9; ctx.setLineDash([2,3]);
-  ctx.beginPath(); ctx.moveTo(rx-W*0.02,ry+W*0.075); ctx.lineTo(rx,ry+W*0.16); ctx.lineTo(rx+W*0.02,ry+W*0.075); ctx.stroke();
-  ctx.setLineDash([]);
-
-  // Astronaut (full detail)
-  const ax=W*0.2, ay=H*0.68;
-  ctx.lineWidth=2; ctx.beginPath(); ctx.arc(ax,ay-W*0.06,W*0.048,0,Math.PI*2); ctx.stroke(); // helmet
-  ctx.lineWidth=1.5; ctx.beginPath(); ctx.ellipse(ax,ay+W*0.025,W*0.038,W*0.065,0,0,Math.PI*2); ctx.stroke(); // suit
-  // Visor
-  ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(ax,ay-W*0.06,W*0.032,Math.PI*0.1,Math.PI*0.9); ctx.stroke();
-  // Arms
-  ctx.beginPath(); ctx.ellipse(ax-W*0.065,ay,W*0.018,W*0.042,-0.3,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(ax+W*0.065,ay,W*0.018,W*0.042,0.3,0,Math.PI*2); ctx.stroke();
-  // Gloves
-  ctx.lineWidth=1; ctx.beginPath(); ctx.ellipse(ax-W*0.078,ay+W*0.04,W*0.016,W*0.013,-0.3,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(ax+W*0.078,ay+W*0.04,W*0.016,W*0.013,0.3,0,Math.PI*2); ctx.stroke();
-  // Legs
-  ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.ellipse(ax-W*0.024,ay+W*0.095,W*0.016,W*0.04,-0.1,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(ax+W*0.024,ay+W*0.095,W*0.016,W*0.04,0.1,0,Math.PI*2); ctx.stroke();
-  // Boots
-  ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.ellipse(ax-W*0.024,ay+W*0.135,W*0.022,W*0.013,0,0,Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(ax+W*0.024,ay+W*0.135,W*0.022,W*0.013,0,0,Math.PI*2); ctx.stroke();
-  // Backpack
-  ctx.strokeRect(ax-W*0.048,ay+W*0.04,W*0.018,W*0.05);
-  // Badges
-  ctx.lineWidth=0.7; ctx.strokeRect(ax-W*0.016,ay,W*0.032,W*0.022);
-  // Tether
-  ctx.lineWidth=0.9; ctx.setLineDash([3,5]);
-  ctx.beginPath(); ctx.moveTo(ax+W*0.045,ay); ctx.quadraticCurveTo(W*0.38,ay-H*0.05,rx-W*0.035,ry+W*0.055); ctx.stroke();
-  ctx.setLineDash([]);
-
-  // 3 UFOs
-  [[W*0.68,H*0.55],[W*0.38,H*0.45],[W*0.12,H*0.6]].forEach(([ux,uy],ui) => {
-    const ur=W*(0.065-ui*0.01);
-    ctx.lineWidth=1.8; ctx.beginPath(); ctx.ellipse(ux,uy,ur,ur*0.3,0,0,Math.PI*2); ctx.stroke();
-    ctx.lineWidth=1.5; ctx.beginPath(); ctx.ellipse(ux,uy-ur*0.3,ur*0.5,ur*0.5,0,0,Math.PI*2); ctx.stroke();
-    // Portholes
-    ctx.lineWidth=0.9;
-    [-ur*0.28,0,ur*0.28].forEach(dx => { ctx.beginPath(); ctx.arc(ux+dx,uy-ur*0.3,ur*0.1,0,Math.PI*2); ctx.stroke(); });
-    // Tractor beam
-    ctx.lineWidth=0.8; ctx.setLineDash([4,5]);
-    ctx.beginPath(); ctx.moveTo(ux-ur*0.4,uy+ur*0.3); ctx.lineTo(ux-ur*0.8,uy+ur*1.5); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(ux+ur*0.4,uy+ur*0.3); ctx.lineTo(ux+ur*0.8,uy+ur*1.5); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(ux,uy+ur*0.3); ctx.lineTo(ux,uy+ur*1.5); ctx.stroke();
-    ctx.setLineDash([]);
-  });
-
-  // 2 Aliens
-  [[W*0.65,H*0.72],[W*0.42,H*0.78]].forEach(([alx,aly]) => {
-    const alr=W*0.042;
-    ctx.lineWidth=1.2;
-    ctx.beginPath(); ctx.ellipse(alx,aly-alr*1.5,alr*1.2,alr,0,0,Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.ellipse(alx,aly,alr*0.7,alr*1.2,0,0,Math.PI*2); ctx.stroke();
-    // Eyes
-    ctx.beginPath(); ctx.ellipse(alx-alr*0.38,aly-alr*1.5,alr*0.24,alr*0.32,0,0,Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.ellipse(alx+alr*0.38,aly-alr*1.5,alr*0.24,alr*0.32,0,0,Math.PI*2); ctx.stroke();
-    ctx.fillStyle='#111'; ctx.beginPath(); ctx.ellipse(alx-alr*0.38,aly-alr*1.5,alr*0.12,alr*0.16,0,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fff';
-    ctx.beginPath(); ctx.ellipse(alx+alr*0.38,aly-alr*1.5,alr*0.12,alr*0.16,0,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fff';
-    ctx.strokeStyle='#111';
-    // Antennae with bobbles
-    ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(alx-alr*0.2,aly-alr*2.4); ctx.lineTo(alx-alr*0.55,aly-alr*3.1); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(alx+alr*0.2,aly-alr*2.4); ctx.lineTo(alx+alr*0.55,aly-alr*3.1); ctx.stroke();
-    ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(alx-alr*0.55,aly-alr*3.1,alr*0.15,0,Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.arc(alx+alr*0.55,aly-alr*3.1,alr*0.15,0,Math.PI*2); ctx.stroke();
-    // Arms & legs
-    ctx.lineWidth=1.2;
-    ctx.beginPath(); ctx.moveTo(alx-alr*0.6,aly-alr*0.3); ctx.lineTo(alx-alr*1.3,aly+alr*0.4); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(alx+alr*0.6,aly-alr*0.3); ctx.lineTo(alx+alr*1.3,aly+alr*0.4); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(alx-alr*0.3,aly+alr*1.1); ctx.lineTo(alx-alr*0.3,aly+alr*2.1); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(alx+alr*0.3,aly+alr*1.1); ctx.lineTo(alx+alr*0.3,aly+alr*2.1); ctx.stroke();
-    // Feet
-    ctx.lineWidth=1; ctx.beginPath(); ctx.ellipse(alx-alr*0.3,aly+alr*2.1,alr*0.22,alr*0.1,0,0,Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.ellipse(alx+alr*0.3,aly+alr*2.1,alr*0.22,alr*0.1,0,0,Math.PI*2); ctx.stroke();
+  // Moon (large)
+  ctx.fillStyle = '#e0e0e0';
+  ctx.beginPath(); ctx.arc(W*0.5, H*0.88, W*0.18, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#bdbdbd';
+  [[-0.04,-0.02],[0.05,0.03],[-0.02,0.05],[0.03,-0.04],[-0.06,0.02]].forEach(([dx,dy]) => {
+    ctx.beginPath(); ctx.arc(W*0.5+dx*W, H*0.88+dy*W, W*0.02+Math.random()*W*0.01, 0, Math.PI*2); ctx.fill();
   });
 
   // Comets
-  [[W*0.06,H*0.09],[W*0.35,H*0.04],[W*0.8,H*0.33]].forEach(([cx2,cy2]) => {
-    ctx.lineWidth=1.8; ctx.beginPath(); ctx.arc(cx2,cy2,5,0,Math.PI*2); ctx.stroke();
-    ctx.lineWidth=1; ctx.setLineDash([3,5]);
-    ctx.beginPath(); ctx.moveTo(cx2-4,cy2); ctx.lineTo(cx2-W*0.1,cy2+H*0.04); ctx.stroke();
-    ctx.lineWidth=0.5; ctx.beginPath(); ctx.moveTo(cx2-3,cy2-3); ctx.lineTo(cx2-W*0.08,cy2+H*0.02); ctx.stroke();
-    ctx.lineWidth=0.5; ctx.beginPath(); ctx.moveTo(cx2-3,cy2+3); ctx.lineTo(cx2-W*0.08,cy2+H*0.06); ctx.stroke();
-    ctx.setLineDash([]);
-  });
+  for (let cm = 0; cm < 3; cm++) {
+    const cx2 = W*(0.1+cm*0.3), cy2 = H*(0.05+cm*0.08);
+    const grad = ctx.createLinearGradient(cx2-W*0.08,cy2,cx2,cy2);
+    grad.addColorStop(0,'rgba(255,255,255,0)');
+    grad.addColorStop(1,'rgba(255,255,255,0.8)');
+    ctx.strokeStyle = grad; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(cx2-W*0.08,cy2); ctx.lineTo(cx2,cy2); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.9)';
+    ctx.beginPath(); ctx.arc(cx2,cy2,2,0,Math.PI*2); ctx.fill();
+  }
+}
 
-  // Space debris / asteroids
-  [[W*0.32,H*0.62,W*0.022],[W*0.55,H*0.42,W*0.015],[W*0.12,H*0.75,W*0.018]].forEach(([ax2,ay2,ar]) => {
-    ctx.lineWidth=1.2;
-    ctx.beginPath(); ctx.moveTo(ax2+ar,ay2); ctx.lineTo(ax2+ar*0.5,ay2+ar); ctx.lineTo(ax2-ar*0.8,ay2+ar*0.6); ctx.lineTo(ax2-ar,ay2-ar*0.2); ctx.lineTo(ax2-ar*0.3,ay2-ar); ctx.lineTo(ax2+ar*0.7,ay2-ar*0.8); ctx.closePath(); ctx.stroke();
-    doodleDots(ctx,ax2-ar,ay2-ar,ar*2,ar*2,ar*0.4);
+// ---- HELPER DRAWING FUNCTIONS ----
+function drawButterfly(ctx, x, y, r) {
+  ['#ff6b9d','#ffd93d'].forEach((c,i) => {
+    ctx.fillStyle = c; ctx.globalAlpha = 0.8;
+    ctx.beginPath();
+    const sx = i===0 ? -1 : 1;
+    ctx.ellipse(x + sx*r, y, r*1.2, r*0.7, i===0 ? -0.5 : 0.5, 0, Math.PI*2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = '#333'; ctx.lineWidth = 0.8;
+  ctx.beginPath(); ctx.moveTo(x, y-r*0.8); ctx.lineTo(x, y+r*0.8); ctx.stroke();
+}
+function drawBird(ctx, x, y, r) {
+  ctx.strokeStyle = '#333'; ctx.lineWidth = 1.5; ctx.beginPath();
+  ctx.moveTo(x-r, y); ctx.quadraticCurveTo(x-r/2, y-r*0.5, x, y);
+  ctx.quadraticCurveTo(x+r/2, y-r*0.5, x+r, y);
+  ctx.stroke();
+}
+function drawCloud(ctx, x, y, r) {
+  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  [[0,0,r],[r*0.6,-r*0.3,r*0.7],[r*1.1,0,r*0.6],[-r*0.5,-r*0.2,r*0.6]].forEach(([dx,dy,cr]) => {
+    ctx.beginPath(); ctx.arc(x+dx, y+dy, cr, 0, Math.PI*2); ctx.fill();
   });
 }
+function drawMushroom(ctx, x, y, r, color='#ef5350') {
+  ctx.fillStyle = '#d7ccc8'; ctx.fillRect(x-r*0.5, y-r*1.2, r, r*1.2);
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.ellipse(x, y-r*1.2, r, r*0.7, 0, Math.PI, 0); ctx.fill();
+  ctx.fillStyle = '#fff';
+  [[0,-r*0.4],[r*0.35,-r*0.15],[-r*0.35,-r*0.15]].forEach(([dx,dy]) => {
+    ctx.beginPath(); ctx.arc(x+dx, y-r*1.2+dy, r*0.18, 0, Math.PI*2); ctx.fill();
+  });
+}
+function drawCoral(ctx, x, y, color, h) {
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-h*0.15,y-h*0.5); ctx.lineTo(x,y-h*0.4); ctx.lineTo(x+h*0.15,y-h*0.5); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.arc(x-h*0.15, y-h*0.5, h*0.08, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x+h*0.15, y-h*0.5, h*0.08, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x, y-h, h*0.09, 0, Math.PI*2); ctx.fill();
+}
+function drawFish(ctx, x, y, r, color, dir) {
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.ellipse(x, y, r, r*0.5, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x-dir*r, y); ctx.lineTo(x-dir*r*1.5, y-r*0.5); ctx.lineTo(x-dir*r*1.5, y+r*0.5); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x+dir*r*0.5, y-r*0.1, r*0.15, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(x+dir*r*0.5, y-r*0.1, r*0.07, 0, Math.PI*2); ctx.fill();
+}
+function drawJellyfish(ctx, x, y, r) {
+  ctx.fillStyle = 'rgba(156,39,176,0.5)';
+  ctx.beginPath(); ctx.ellipse(x, y, r, r*0.6, 0, Math.PI, 0); ctx.fill();
+  ctx.strokeStyle = 'rgba(156,39,176,0.4)'; ctx.lineWidth = 1.5;
+  for (let t = 0; t < 5; t++) {
+    const tx = x + (t-2)*r*0.4;
+    ctx.beginPath(); ctx.moveTo(tx, y); ctx.quadraticCurveTo(tx+r*0.2, y+r*1.2, tx, y+r*2); ctx.stroke();
+  }
+}
+function drawStarfish(ctx, x, y, r) {
+  ctx.fillStyle = '#ff9843';
+  for (let a = 0; a < 5; a++) {
+    const ang = (a/5)*Math.PI*2 - Math.PI/2;
+    ctx.beginPath(); ctx.ellipse(x+Math.cos(ang)*r, y+Math.sin(ang)*r, r*0.35, r*0.15, ang, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.beginPath(); ctx.arc(x,y,r*0.3,0,Math.PI*2); ctx.fill();
+}
+function drawOwl(ctx, x, y, r) {
+  ctx.fillStyle = '#795548'; ctx.beginPath(); ctx.ellipse(x, y, r, r*1.3, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x, y-r*1.2, r*0.8, r*0.8, 0, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#d7ccc8';
+  ctx.beginPath(); ctx.ellipse(x-r*0.3, y-r*1.2, r*0.3, r*0.35, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x+r*0.3, y-r*1.2, r*0.3, r*0.35, 0, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#ffb300'; ctx.beginPath(); ctx.arc(x-r*0.3, y-r*1.2, r*0.18, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x+r*0.3, y-r*1.2, r*0.18, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(x-r*0.3, y-r*1.2, r*0.08, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x+r*0.3, y-r*1.2, r*0.08, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#ff9800';
+  ctx.beginPath(); ctx.moveTo(x, y-r*1.1); ctx.lineTo(x-r*0.15, y-r*1.35); ctx.lineTo(x+r*0.15, y-r*1.35); ctx.closePath(); ctx.fill();
+  // Wings as triangle-ish
+  ctx.fillStyle = '#6d4c41';
+  ctx.beginPath(); ctx.moveTo(x-r, y); ctx.lineTo(x-r*1.6, y+r*0.8); ctx.lineTo(x-r*0.2, y+r*0.5); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x+r, y); ctx.lineTo(x+r*1.6, y+r*0.8); ctx.lineTo(x+r*0.2, y+r*0.5); ctx.closePath(); ctx.fill();
+}
+function drawFox(ctx, x, y, r) {
+  ctx.fillStyle = '#ff9843';
+  ctx.beginPath(); ctx.ellipse(x, y, r*1.2, r*0.6, 0, 0, Math.PI*2); ctx.fill(); // body
+  ctx.beginPath(); ctx.ellipse(x+r, y-r*0.3, r*0.7, r*0.6, 0.3, 0, Math.PI*2); ctx.fill(); // head
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(x+r*1.4, y-r*0.1, r*0.25, r*0.2, 0, 0, Math.PI*2); ctx.fill(); // muzzle
+  // Ears
+  ctx.fillStyle = '#ff9843';
+  ctx.beginPath(); ctx.moveTo(x+r*0.7, y-r*0.7); ctx.lineTo(x+r*0.5, y-r*1.3); ctx.lineTo(x+r*1.1, y-r*0.8); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x+r*1.1, y-r*0.6); ctx.lineTo(x+r*1.0, y-r*1.2); ctx.lineTo(x+r*1.5, y-r*0.7); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#333'; ctx.beginPath(); ctx.arc(x+r*1.35, y-r*0.35, r*0.08, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#ff7043'; ctx.lineWidth = r*0.25; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(x-r*1.1, y); ctx.quadraticCurveTo(x-r*1.5, y-r*0.5, x-r*1.3, y-r*1.1); ctx.stroke();
+}
+function drawDeer(ctx, x, y, r) {
+  ctx.fillStyle = '#795548';
+  ctx.beginPath(); ctx.ellipse(x, y, r*1.1, r*0.6, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x+r*0.8, y-r*0.5, r*0.5, r*0.6, 0.3, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#795548'; ctx.lineWidth = r*0.25;
+  [[x-r*0.5, y+r*0.5],[x-r*0.1,y+r*0.5],[x+r*0.3,y+r*0.5],[x+r*0.7,y+r*0.5]].forEach(([lx,ly]) => {
+    ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(lx,ly+r*0.7); ctx.stroke();
+  });
+  ctx.strokeStyle = '#6d4c41'; ctx.lineWidth = r*0.12;
+  ctx.beginPath(); ctx.moveTo(x+r*0.9,y-r*0.9); ctx.lineTo(x+r*0.7,y-r*1.4); ctx.lineTo(x+r*0.5,y-r*1.6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+r*1.0,y-r*0.85); ctx.lineTo(x+r*1.2,y-r*1.4); ctx.lineTo(x+r*1.4,y-r*1.6); ctx.stroke();
+}
+function drawFairy(ctx, x, y, r) {
+  ctx.fillStyle = '#ffe0b2';
+  ctx.beginPath(); ctx.arc(x, y, r*0.5, 0, Math.PI*2); ctx.fill(); // head
+  ctx.beginPath(); ctx.ellipse(x, y+r*0.9, r*0.35, r*0.5, 0, 0, Math.PI*2); ctx.fill(); // body
+  // Wings
+  ctx.fillStyle = 'rgba(255,107,157,0.35)';
+  ctx.beginPath(); ctx.ellipse(x-r*0.8, y+r*0.4, r*0.7, r*0.4, -0.4, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x+r*0.8, y+r*0.4, r*0.7, r*0.4, 0.4, 0, Math.PI*2); ctx.fill();
+  // Wand sparkle
+  ctx.strokeStyle = '#ffd93d'; ctx.lineWidth = r*0.15;
+  ctx.beginPath(); ctx.moveTo(x+r*0.3, y+r*0.5); ctx.lineTo(x+r*1.0, y+r*1.2); ctx.stroke();
+  ctx.fillStyle = '#ffd93d';
+  ctx.beginPath(); ctx.arc(x+r*1.0, y+r*1.2, r*0.2, 0, Math.PI*2); ctx.fill();
+  for (let sp = 0; sp < 5; sp++) {
+    const sa = (sp/5)*Math.PI*2; const sr = r*0.1;
+    ctx.beginPath(); ctx.arc(x+r+Math.cos(sa)*r*0.4, y+r*1.2+Math.sin(sa)*r*0.4, r*0.06, 0, Math.PI*2); ctx.fill();
+  }
+}
+function drawCar(ctx, x, y, w, color, dir) {
+  const h = w*0.5;
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.roundRect(x, y, w, h, 6); ctx.fill();
+  ctx.fillStyle = lightenColor(color.replace(/^#/,'#'), 20);
+  ctx.beginPath(); ctx.roundRect(x+w*0.15, y-h*0.5, w*0.65, h*0.55, 4); ctx.fill();
+  ctx.fillStyle = '#b3e5fc';
+  ctx.fillRect(x+w*0.18, y-h*0.45, w*0.25, h*0.4);
+  ctx.fillRect(x+w*0.5, y-h*0.45, w*0.25, h*0.4);
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x+w*0.2, y+h*0.9, h*0.35, 0, Math.PI*2); ctx.fill(); ctx.fillStyle='#555';ctx.beginPath(); ctx.arc(x+w*0.2, y+h*0.9, h*0.2, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x+w*0.8, y+h*0.9, h*0.35, 0, Math.PI*2); ctx.fill(); ctx.fillStyle='#555'; ctx.beginPath(); ctx.arc(x+w*0.8, y+h*0.9, h*0.2, 0, Math.PI*2); ctx.fill();
+}
+function drawPerson(ctx, x, y, h) {
+  ctx.fillStyle = '#ffe0b2'; ctx.beginPath(); ctx.arc(x, y-h*0.85, h*0.12, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#333'; ctx.lineWidth = h*0.06;
+  ctx.beginPath(); ctx.moveTo(x, y-h*0.73); ctx.lineTo(x, y-h*0.3); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x-h*0.15, y-h*0.6); ctx.lineTo(x+h*0.15, y-h*0.6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x, y-h*0.3); ctx.lineTo(x-h*0.12, y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x, y-h*0.3); ctx.lineTo(x+h*0.12, y); ctx.stroke();
+}
+function drawPlant(ctx, x, y, r) {
+  ctx.fillStyle = '#795548'; ctx.fillRect(x-r*0.3, y, r*0.6, r*0.8);
+  ctx.strokeStyle = '#795548'; ctx.lineWidth = r*0.15; ctx.fillStyle = '#66bb6a';
+  for (let i = 0; i < 5; i++) {
+    const a = (i/5)*Math.PI*2;
+    ctx.beginPath(); ctx.ellipse(x+Math.cos(a)*r*0.6, y-r*0.1+Math.sin(a)*r*0.4, r*0.4, r*0.25, a, 0, Math.PI*2); ctx.fill();
+  }
+}
+function drawPlanet(ctx, x, y, r, color) {
+  const g = ctx.createRadialGradient(x-r*0.3, y-r*0.3, r*0.1, x, y, r);
+  g.addColorStop(0, lightenColor(color.replace('#','#'), 40));
+  g.addColorStop(1, darkenColor(color.replace('#','#'), 20));
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  // Ring (for some)
+  if (Math.random() > 0.5) {
+    ctx.strokeStyle = `${color}88`; ctx.lineWidth = r*0.15;
+    ctx.beginPath(); ctx.ellipse(x, y, r*1.6, r*0.3, 0.3, 0, Math.PI*2); ctx.stroke();
+  }
+}
+function drawRocket(ctx, x, y, r) {
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.moveTo(x, y-r*1.5); ctx.lineTo(x-r*0.5, y+r*0.5); ctx.lineTo(x+r*0.5, y+r*0.5); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#ef5350'; ctx.fillRect(x-r*0.5, y+r*0.3, r, r*0.5);
+  ctx.fillStyle = '#ff9843';
+  ctx.beginPath(); ctx.moveTo(x-r*0.5, y+r*0.8); ctx.lineTo(x-r*0.8, y+r*1.4); ctx.lineTo(x, y+r*0.8); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x+r*0.5, y+r*0.8); ctx.lineTo(x+r*0.8, y+r*1.4); ctx.lineTo(x, y+r*0.8); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#b3e5fc'; ctx.beginPath(); ctx.ellipse(x, y-r*0.5, r*0.25, r*0.25, 0, 0, Math.PI*2); ctx.fill();
+}
+function drawAstronaut(ctx, x, y, r) {
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x, y-r*0.5, r*0.55, 0, Math.PI*2); ctx.fill(); // helmet
+  ctx.beginPath(); ctx.ellipse(x, y+r*0.3, r*0.6, r*0.8, 0, 0, Math.PI*2); ctx.fill(); // suit
+  ctx.fillStyle = '#b3e5fc'; ctx.beginPath(); ctx.arc(x, y-r*0.5, r*0.3, 0, Math.PI*2); ctx.fill(); // visor
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.ellipse(x-r*0.8, y+r*0.2, r*0.2, r*0.5, -0.3, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x+r*0.8, y+r*0.2, r*0.2, r*0.5, 0.3, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x-r*0.3, y+r*1.0, r*0.18, r*0.45, -0.1, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x+r*0.3, y+r*1.0, r*0.18, r*0.45, 0.1, 0, Math.PI*2); ctx.fill();
+}
+function drawAlien(ctx, x, y, r, color) {
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.ellipse(x, y, r*0.6, r*0.8, 0, 0, Math.PI*2); ctx.fill(); // body
+  ctx.beginPath(); ctx.ellipse(x, y-r*0.8, r*0.8, r*0.65, 0, 0, Math.PI*2); ctx.fill(); // head
+  ctx.fillStyle = '#1a1a2e';
+  ctx.beginPath(); ctx.ellipse(x-r*0.3, y-r*0.8, r*0.22, r*0.3, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x+r*0.3, y-r*0.8, r*0.22, r*0.3, 0, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = color; ctx.lineWidth = r*0.12;
+  ctx.beginPath(); ctx.moveTo(x-r*0.3, y-r*0.1); ctx.lineTo(x-r*0.8, y+r*0.4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+r*0.3, y-r*0.1); ctx.lineTo(x+r*0.8, y+r*0.4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x-r*0.25, y+r*0.6); ctx.lineTo(x-r*0.25, y+r*1.1); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+r*0.25, y+r*0.6); ctx.lineTo(x+r*0.25, y+r*1.1); ctx.stroke();
+  // Antennae
+  ctx.lineWidth = r*0.1;
+  ctx.beginPath(); ctx.moveTo(x-r*0.2, y-r*1.4); ctx.lineTo(x-r*0.5, y-r*2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+r*0.2, y-r*1.4); ctx.lineTo(x+r*0.5, y-r*2); ctx.stroke();
+  ctx.fillStyle = '#ffd93d';
+  ctx.beginPath(); ctx.arc(x-r*0.5, y-r*2, r*0.12, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x+r*0.5, y-r*2, r*0.12, 0, Math.PI*2); ctx.fill();
+}
+
 // ---- CAT CLICK HANDLER ----
 function catTouchHandler(e) {
   e.preventDefault();
