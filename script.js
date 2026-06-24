@@ -88,23 +88,26 @@ function toggleMusic() {
   musicPlaying = !musicPlaying;
 }
 
-// Auto-play on ANY first user interaction — scroll, touch, or click
-function tryAutoPlay() {
+// Start Experience via Launch Screen
+function startExperience() {
+  const launchScreen = document.getElementById('launch-screen');
+  
+  // Play music
   if (!musicPlaying) {
     bgMusic.play().then(() => {
       musicPlaying = true;
       musicIcon.textContent = '⏸';
       musicBtn.classList.add('playing');
-    }).catch(() => {});
+    }).catch(e => console.error("Audio play failed:", e));
   }
-  // Remove all three listeners once triggered
-  document.removeEventListener('click',      tryAutoPlay);
-  document.removeEventListener('scroll',     tryAutoPlay);
-  document.removeEventListener('touchstart', tryAutoPlay);
+
+  // Hide overlay
+  launchScreen.style.opacity = '0';
+  launchScreen.style.visibility = 'hidden';
+  setTimeout(() => {
+    launchScreen.style.display = 'none';
+  }, 800);
 }
-document.addEventListener('click',      tryAutoPlay, { once: true });
-document.addEventListener('scroll',     tryAutoPlay, { once: true });
-document.addEventListener('touchstart', tryAutoPlay, { once: true, passive: true });
 
 // ===== LIGHTBOX =====
 const images = ['1.jpeg','2.jpeg','3.jpeg','4.jpeg','5.jpeg','6.jpeg','7.jpeg','8.jpeg','9.jpeg','10.jpeg','11.jpeg'];
