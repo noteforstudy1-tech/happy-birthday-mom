@@ -416,13 +416,23 @@ body {
 }
 
 /* ---- LAUNCH SCREEN ---- */
+.no-scroll {
+  overflow: hidden !important;
+  height: 100% !important;
+  width: 100% !important;
+  position: fixed; /* Locks body scroll on iOS Safari */
+}
+
 #launch-screen {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(10, 10, 12, 0.95);
-  backdrop-filter: blur(10px);
-  z-index: 9999;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100%;
+  background: rgba(10, 10, 12, 0.98);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  z-index: 2147483647; /* Maximum possible z-index */
   display: flex; justify-content: center; align-items: center; text-align: center;
   transition: opacity 0.8s ease, visibility 0.8s;
+  touch-action: none; /* Prevent any swipe/scroll gestures from passing through */
 }
 .launch-content {
   padding: 40px;

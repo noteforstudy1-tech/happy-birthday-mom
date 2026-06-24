@@ -2,40 +2,6 @@
    SAPNA'S BIRTHDAY WEBSITE - JAVASCRIPT
    ============================================= */
 
-// ===== POLYFILL: roundRect for older browsers =====
-if (!CanvasRenderingContext2D.prototype.roundRect) {
-  CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
-    if (w < 2 * r) r = w / 2;
-    if (h < 2 * r) r = h / 2;
-    this.beginPath();
-    this.moveTo(x + r, y);
-    this.arcTo(x + w, y,     x + w, y + h, r);
-    this.arcTo(x + w, y + h, x,     y + h, r);
-    this.arcTo(x,     y + h, x,     y,     r);
-    this.arcTo(x,     y,     x + w, y,     r);
-    this.closePath();
-    return this;
-  };
-}
-
-// ===== COLOR HELPERS (defined first so all functions can use them) =====
-function lightenColor(hex, amount) {
-  hex = hex.replace(/^#/, '');
-  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
-  const r = Math.min(255, parseInt(hex.slice(0,2),16) + amount);
-  const g = Math.min(255, parseInt(hex.slice(2,4),16) + amount);
-  const b = Math.min(255, parseInt(hex.slice(4,6),16) + amount);
-  return `rgb(${r},${g},${b})`;
-}
-function darkenColor(hex, amount) {
-  hex = hex.replace(/^#/, '');
-  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
-  const r = Math.max(0, parseInt(hex.slice(0,2),16) - amount);
-  const g = Math.max(0, parseInt(hex.slice(2,4),16) - amount);
-  const b = Math.max(0, parseInt(hex.slice(4,6),16) - amount);
-  return `rgb(${r},${g},${b})`;
-}
-
 // ===== PARTICLES =====
 (function initParticles() {
   const container = document.getElementById('particles-container');
@@ -87,28 +53,17 @@ function toggleMusic() {
   }
   musicPlaying = !musicPlaying;
 }
-
-// Start Experience via Launch Screen
-function startExperience() {
-  const launchScreen = document.getElementById('launch-screen');
-  
-  // Play music
+// Auto-play on first interaction
+document.addEventListener('click', function tryPlay() {
   if (!musicPlaying) {
     bgMusic.play().then(() => {
       musicPlaying = true;
       musicIcon.textContent = '⏸';
       musicBtn.classList.add('playing');
-    }).catch(e => console.error("Audio play failed:", e));
+    }).catch(() => {});
   }
-
-  // Hide overlay and allow scrolling
-  document.body.classList.remove('no-scroll');
-  launchScreen.style.opacity = '0';
-  launchScreen.style.visibility = 'hidden';
-  setTimeout(() => {
-    launchScreen.style.display = 'none';
-  }, 800);
-}
+  document.removeEventListener('click', tryPlay);
+}, { once: true });
 
 // ===== LIGHTBOX =====
 const images = ['1.jpeg','2.jpeg','3.jpeg','4.jpeg','5.jpeg','6.jpeg','7.jpeg','8.jpeg','9.jpeg','10.jpeg','11.jpeg'];
@@ -172,11 +127,6 @@ let candySelected = null;
 let candyAnimating = false;
 let candyCanvas, candyCtx, candyCellSize;
 
-// Swipe tracking
-let candySwipeStart = null;
-let candySwipeStartPos = null;
-const SWIPE_MIN_PX = 18; // minimum drag distance to register
-
 function initCandyGame() {
   candyCanvas = document.getElementById('candy-board');
   candyCtx = candyCanvas.getContext('2d');
@@ -198,18 +148,10 @@ function initCandyGame() {
   renderCandy();
   setMsg('candy', '');
   
-  // Remove all old listeners and attach swipe/drag listeners
-  ['mousedown','mousemove','mouseup','mouseleave',
-   'touchstart','touchmove','touchend'].forEach(evt => {
-    candyCanvas.removeEventListener(evt, candyEventHandler);
-  });
-  candyCanvas.addEventListener('mousedown',  candyEventHandler);
-  candyCanvas.addEventListener('mousemove',  candyEventHandler);
-  candyCanvas.addEventListener('mouseup',    candyEventHandler);
-  candyCanvas.addEventListener('mouseleave', candyEventHandler);
-  candyCanvas.addEventListener('touchstart', candyEventHandler, { passive: false });
-  candyCanvas.addEventListener('touchmove',  candyEventHandler, { passive: false });
-  candyCanvas.addEventListener('touchend',   candyEventHandler, { passive: false });
+  candyCanvas.removeEventListener('touchstart', candyTouchStart);
+  candyCanvas.removeEventListener('click', candyClick);
+  candyCanvas.addEventListener('click', candyClick);
+  candyCanvas.addEventListener('touchstart', candyTouchStart, { passive: false });
 }
 
 function generateBoard() {
@@ -339,106 +281,63 @@ function renderCandy(highlight) {
   }
 }
 
-// Color helpers moved to top of file
+function lightenColor(hex, amount) {
+  const r = Math.min(255, parseInt(hex.slice(1,3),16) + amount);
+  const g = Math.min(255, parseInt(hex.slice(3,5),16) + amount);
+  const b = Math.min(255, parseInt(hex.slice(5,7),16) + amount);
+  return `rgb(${r},${g},${b})`;
+}
+function darkenColor(hex, amount) {
+  const r = Math.max(0, parseInt(hex.slice(1,3),16) - amount);
+  const g = Math.max(0, parseInt(hex.slice(3,5),16) - amount);
+  const b = Math.max(0, parseInt(hex.slice(5,7),16) - amount);
+  return `rgb(${r},${g},${b})`;
+}
 
-// ---- Unified swipe/drag event handler for Candy Crush ----
-function candyGetCanvasXY(e) {
+function candyPosFromEvent(e) {
   const rect = candyCanvas.getBoundingClientRect();
   const scaleX = candyCanvas.width / rect.width;
   const scaleY = candyCanvas.height / rect.height;
-  let cx, cy;
-  if (e.touches && e.touches.length > 0) {
-    cx = e.touches[0].clientX; cy = e.touches[0].clientY;
-  } else if (e.changedTouches && e.changedTouches.length > 0) {
-    cx = e.changedTouches[0].clientX; cy = e.changedTouches[0].clientY;
-  } else {
-    cx = e.clientX; cy = e.clientY;
-  }
-  return {
-    x: (cx - rect.left) * scaleX,
-    y: (cy - rect.top)  * scaleY
-  };
+  const x = (e.clientX - rect.left) * scaleX;
+  const y = (e.clientY - rect.top) * scaleY;
+  return { r: Math.floor(y / candyCellSize), c: Math.floor(x / candyCellSize) };
 }
 
-function candyXYtoRC(x, y) {
-  return {
-    r: Math.floor(y / candyCellSize),
-    c: Math.floor(x / candyCellSize)
-  };
-}
-
-function candyEventHandler(e) {
+function candyTouchStart(e) {
   e.preventDefault();
+  const touch = e.touches[0];
+  const rect = candyCanvas.getBoundingClientRect();
+  const scaleX = candyCanvas.width / rect.width;
+  const scaleY = candyCanvas.height / rect.height;
+  const x = (touch.clientX - rect.left) * scaleX;
+  const y = (touch.clientY - rect.top) * scaleY;
+  handleCandyTap(Math.floor(y / candyCellSize), Math.floor(x / candyCellSize));
+}
+
+function candyClick(e) {
+  const { r, c } = candyPosFromEvent(e);
+  handleCandyTap(r, c);
+}
+
+function handleCandyTap(r, c) {
   if (candyAnimating) return;
+  if (r < 0 || r >= CANDY_ROWS || c < 0 || c >= CANDY_COLS) return;
+  if (candyBoard[r][c] === -1) return;
 
-  const { x, y } = candyGetCanvasXY(e);
-
-  if (e.type === 'mousedown' || e.type === 'touchstart') {
-    const { r, c } = candyXYtoRC(x, y);
-    if (r < 0 || r >= CANDY_ROWS || c < 0 || c >= CANDY_COLS) return;
-    if (candyBoard[r][c] === -1) return;
-
-    if (candySelected) {
-      const dr = Math.abs(candySelected.r - r);
-      const dc = Math.abs(candySelected.c - c);
-      if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
-        // Clicked adjacent candy — Swap!
-        const srcR = candySelected.r, srcC = candySelected.c;
-        candySwipeStart = null; candySwipeStartPos = null; candySelected = null;
-        attemptSwap(srcR, srcC, r, c);
-        return;
-      } else if (candySelected.r === r && candySelected.c === c) {
-        // Tapped same candy, deselect
-        candySwipeStart = null; candySwipeStartPos = null; candySelected = null;
-        renderCandy();
-        return;
-      }
-    }
-
-    candySwipeStart    = { r, c };
-    candySwipeStartPos = { x, y };
+  if (!candySelected) {
     candySelected = { r, c };
     renderCandy();
+    return;
+  }
 
-  } else if (e.type === 'mousemove' || e.type === 'touchmove') {
-    if (!candySwipeStart || !candySwipeStartPos) return;
-    const dx = x - candySwipeStartPos.x;
-    const dy = y - candySwipeStartPos.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < SWIPE_MIN_PX) return;
-
-    // Determine direction
-    let dr = 0, dc = 0;
-    if (Math.abs(dx) > Math.abs(dy)) {
-      dc = dx > 0 ? 1 : -1;
-    } else {
-      dr = dy > 0 ? 1 : -1;
-    }
-    const { r, c } = candySwipeStart;
-    const r2 = r + dr, c2 = c + dc;
-    // Reset swipe to avoid multiple fires
-    const srcR = r, srcC = c;
-    candySwipeStart = null; candySwipeStartPos = null; candySelected = null;
-    if (r2 >= 0 && r2 < CANDY_ROWS && c2 >= 0 && c2 < CANDY_COLS) {
-      attemptSwap(srcR, srcC, r2, c2);
-    } else {
-      renderCandy();
-    }
-
-  } else if (e.type === 'mouseup' || e.type === 'touchend' || e.type === 'mouseleave') {
-    // If no swipe was far enough, treat as a tap (select/deselect)
-    if (candySwipeStart) {
-      const dx = x - candySwipeStartPos.x;
-      const dy = y - candySwipeStartPos.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < SWIPE_MIN_PX && e.type !== 'mouseleave') {
-        // Short tap: keep selection visible (already set in mousedown)
-      } else {
-        candySwipeStart = null; candySwipeStartPos = null;
-        candySelected = null;
-        renderCandy();
-      }
-    }
+  const dr = Math.abs(r - candySelected.r), dc = Math.abs(c - candySelected.c);
+  if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
+    const sr = candySelected.r, sc = candySelected.c;
+    candySelected = null;
+    attemptSwap(sr, sc, r, c);
+  } else {
+    candySelected = { r, c };
+    renderCandy();
   }
 }
 
@@ -671,69 +570,39 @@ function drawCatScene() {
 
 function drawHiddenCat(ctx, cx, cy, cr) {
   ctx.save();
-  // Calico cat - white base with distinct patches to prevent perfect invisibility
-  const bodyColor = '#ffffff'; 
-  const orangePatch = '#ff9f43';
-  const blackPatch = '#2f3640';
-  const outlineColor = '#1e272e';
-  
-  // Subtle shadow to separate from background
-  ctx.shadowColor = 'rgba(0,0,0,0.3)';
-  ctx.shadowBlur = cr * 0.15;
-  ctx.shadowOffsetY = cr * 0.05;
+  // Cat body - drawn to blend with surroundings
+  const bodyColor = '#c8a882'; // tan/cream color similar to doodle
   
   // Body (oval)
   ctx.beginPath();
   ctx.ellipse(cx, cy + cr * 0.4, cr * 0.7, cr * 0.55, 0, 0, Math.PI * 2);
   ctx.fillStyle = bodyColor;
   ctx.fill();
-  ctx.shadowColor = 'transparent'; // only shadow on the base shape
-  
-  // Body Patches
-  ctx.fillStyle = orangePatch;
-  ctx.beginPath(); ctx.ellipse(cx - cr * 0.3, cy + cr * 0.3, cr * 0.25, cr * 0.3, -0.2, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = blackPatch;
-  ctx.beginPath(); ctx.ellipse(cx + cr * 0.4, cy + cr * 0.5, cr * 0.2, cr * 0.25, 0.4, 0, Math.PI * 2); ctx.fill();
-
-  ctx.strokeStyle = outlineColor;
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.ellipse(cx, cy + cr * 0.4, cr * 0.7, cr * 0.55, 0, 0, Math.PI * 2);
+  ctx.strokeStyle = '#a0856a';
+  ctx.lineWidth = 1.2;
   ctx.stroke();
 
   // Head
-  ctx.shadowColor = 'rgba(0,0,0,0.2)';
   ctx.beginPath();
   ctx.ellipse(cx, cy - cr * 0.1, cr * 0.5, cr * 0.48, 0, 0, Math.PI * 2);
   ctx.fillStyle = bodyColor;
   ctx.fill();
-  ctx.shadowColor = 'transparent';
-
-  // Head patches
-  ctx.fillStyle = orangePatch;
-  ctx.beginPath(); ctx.ellipse(cx - cr * 0.2, cy - cr * 0.3, cr * 0.18, cr * 0.18, 0, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = blackPatch;
-  ctx.beginPath(); ctx.ellipse(cx + cr * 0.25, cy - cr * 0.2, cr * 0.15, cr * 0.18, 0, 0, Math.PI*2); ctx.fill();
-
-  ctx.strokeStyle = outlineColor;
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.ellipse(cx, cy - cr * 0.1, cr * 0.5, cr * 0.48, 0, 0, Math.PI * 2);
+  ctx.strokeStyle = '#a0856a';
+  ctx.lineWidth = 1.2;
   ctx.stroke();
 
   // Ears
-  ctx.strokeStyle = outlineColor;
-  ctx.lineWidth = 1.5;
-  // Left ear (orange)
-  ctx.fillStyle = orangePatch;
+  ctx.fillStyle = bodyColor;
+  ctx.strokeStyle = '#a0856a';
+  ctx.lineWidth = 1;
+  // Left ear
   ctx.beginPath();
   ctx.moveTo(cx - cr * 0.35, cy - cr * 0.45);
   ctx.lineTo(cx - cr * 0.52, cy - cr * 0.9);
   ctx.lineTo(cx - cr * 0.15, cy - cr * 0.5);
   ctx.closePath();
   ctx.fill(); ctx.stroke();
-  // Right ear (black)
-  ctx.fillStyle = blackPatch;
+  // Right ear
   ctx.beginPath();
   ctx.moveTo(cx + cr * 0.35, cy - cr * 0.45);
   ctx.lineTo(cx + cr * 0.52, cy - cr * 0.9);
@@ -755,11 +624,11 @@ function drawHiddenCat(ctx, cx, cy, cr) {
   ctx.closePath(); ctx.fill();
 
   // Eyes
-  ctx.fillStyle = '#1e272e';
+  ctx.fillStyle = '#5a3825';
   ctx.beginPath(); ctx.ellipse(cx - cr * 0.18, cy - cr * 0.12, cr * 0.1, cr * 0.12, 0, 0, Math.PI * 2); ctx.fill();
   ctx.beginPath(); ctx.ellipse(cx + cr * 0.18, cy - cr * 0.12, cr * 0.1, cr * 0.12, 0, 0, Math.PI * 2); ctx.fill();
   // Eye shine
-  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  ctx.fillStyle = 'rgba(255,255,255,0.8)';
   ctx.beginPath(); ctx.arc(cx - cr * 0.14, cy - cr * 0.16, cr * 0.04, 0, Math.PI * 2); ctx.fill();
   ctx.beginPath(); ctx.arc(cx + cr * 0.22, cy - cr * 0.16, cr * 0.04, 0, Math.PI * 2); ctx.fill();
 
@@ -768,8 +637,8 @@ function drawHiddenCat(ctx, cx, cy, cr) {
   ctx.beginPath(); ctx.arc(cx, cy, cr * 0.07, 0, Math.PI * 2); ctx.fill();
 
   // Whiskers
-  ctx.strokeStyle = outlineColor;
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = '#a0856a';
+  ctx.lineWidth = 0.8;
   [[-0.12,-0.35,-0.55,0.02],[-0.12,-0.01,-0.55,0.12],
    [0.12,-0.35, 0.55,0.02],[ 0.12,-0.01, 0.55,0.12]].forEach(([sx,sy,ex,ey]) => {
     ctx.beginPath();
@@ -779,17 +648,9 @@ function drawHiddenCat(ctx, cx, cy, cr) {
   });
 
   // Tail
-  ctx.strokeStyle = outlineColor;
-  ctx.lineWidth = cr * 0.22;
+  ctx.strokeStyle = '#a0856a';
+  ctx.lineWidth = cr * 0.18;
   ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(cx + cr * 0.6, cy + cr * 0.6);
-  ctx.quadraticCurveTo(cx + cr * 1.4, cy + cr * 1.1, cx + cr * 0.9, cy + cr * 0.1);
-  ctx.stroke();
-  
-  // Tail color inner
-  ctx.strokeStyle = orangePatch;
-  ctx.lineWidth = cr * 0.14;
   ctx.beginPath();
   ctx.moveTo(cx + cr * 0.6, cy + cr * 0.6);
   ctx.quadraticCurveTo(cx + cr * 1.4, cy + cr * 1.1, cx + cr * 0.9, cy + cr * 0.1);
@@ -1567,3 +1428,4 @@ window.addEventListener('resize', () => {
     catScoreVal = savedScore;
   }
 });
+
