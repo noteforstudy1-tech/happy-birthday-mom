@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy 45th Birthday, Sapna! 🎂</title>
+  <meta name="description" content="A special birthday website for Sapna's 45th birthday with photos, music and games!" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ========== FLOATING PARTICLES ========== -->
+<div id="particles-container"></div>
+
+<!-- ========== MUSIC PLAYER ========== -->
+<div id="music-player">
+  <button id="music-btn" onclick="toggleMusic()" title="Play/Pause Music">
+    <span id="music-icon">🎵</span>
+  </button>
+  <div id="music-info">Sapna Nahi...</div>
+  <audio id="bgMusic" loop>
+    <source src="Sapna Nahi.mp3" type="audio/mpeg" />
+  </audio>
+</div>
+
+<!-- ========== HERO SECTION ========== -->
+<section id="hero">
+  <div id="hero-bg-overlay"></div>
+  <div class="balloons-container">
+    <div class="balloon" style="--c:#ff6b9d;--d:0s;--l:5%"></div>
+    <div class="balloon" style="--c:#ffd93d;--d:0.5s;--l:15%"></div>
+    <div class="balloon" style="--c:#6bcb77;--d:1s;--l:25%"></div>
+    <div class="balloon" style="--c:#4d96ff;--d:1.5s;--l:35%"></div>
+    <div class="balloon" style="--c:#ff6b9d;--d:0.3s;--l:50%"></div>
+    <div class="balloon" style="--c:#ffd93d;--d:0.8s;--l:65%"></div>
+    <div class="balloon" style="--c:#ff9843;--d:1.2s;--l:75%"></div>
+    <div class="balloon" style="--c:#6bcb77;--d:0.6s;--l:85%"></div>
+    <div class="balloon" style="--c:#4d96ff;--d:1.8s;--l:92%"></div>
+  </div>
+  <div class="confetti-container" id="confettiContainer"></div>
+  <div id="hero-content">
+    <div id="crown">👑</div>
+    <p class="subtitle-top">With all our love...</p>
+    <h1 id="hero-title">Happy Birthday</h1>
+    <h2 id="hero-name">Sapna</h2>
+    <div id="age-badge">45</div>
+    <p id="hero-message">You light up every room you walk into.<br/>Today, the whole world celebrates <em>you</em>! 🌸</p>
+    <a href="#gallery" class="btn-scroll">Scroll Down ↓</a>
+  </div>
+</section>
+
+<!-- ========== PHOTO GALLERY ========== -->
+<section id="gallery">
+  <div class="section-header">
+    <h2>Our Favourite Moments 📸</h2>
+    <p>A life full of beautiful memories</p>
+  </div>
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="gallery-item" onclick="openLightbox('1.jpeg')"><img src="1.jpeg" alt="Sapna photo 1" loading="lazy" /><div class="gallery-overlay"><span>💕</span></div></div>
+    <div class="gallery-item" onclick="openLightbox('2.jpeg')"><img src="2.jpeg" alt="Sapna photo 2" loading="lazy" /><div class="gallery-overlay"><span>🌸</span></div></div>
+    <div class="gallery-item" onclick="openLightbox('3.jpeg')"><img src="3.jpeg" alt="Sapna photo 3" loading="lazy" /><div class="gallery-overlay"><span>✨</span></div></div>
+    <div class="gallery-item" onclick="openLightbox('4.jpeg')"><img src="4.jpeg" alt="Sapna photo 4" loading="lazy" /><div class="gallery-overlay"><span>💖</span></div></div>
+    <div class="gallery-item featured" onclick="openLightbox('5.jpeg')"><img src="5.jpeg" alt="Sapna photo 5" loading="lazy" /><div class="gallery-overlay"><span>👑</span></div></div>
+    <div class="gallery-item" onclick="openLightbox('6.jpeg')"><img src="6.jpeg" alt="Sapna photo 6" loading="lazy" /><div class="gallery-overlay"><span>🌺</span></div></div>
+    <div class="gallery-item" onclick="openLightbox('7.jpeg')"><img src="7.jpeg" alt="Sapna photo 7" loading="lazy" /><div class="gallery-overlay"><span>🎀</span></div></div>
+    <div class="gallery-item" onclick="openLightbox('8.jpeg')"><img src="8.jpeg" alt="Sapna photo 8" loading="lazy" /><div class="gallery-overlay"><span>💫</span></div></div>
+    <div class="gallery-item" onclick="openLightbox('9.jpeg')"><img src="9.jpeg" alt="Sapna photo 9" loading="lazy" /><div class="gallery-overlay"><span>🌷</span></div></div>
+    <div class="gallery-item" onclick="openLightbox('10.jpeg')"><img src="10.jpeg" alt="Sapna photo 10" loading="lazy" /><div class="gallery-overlay"><span>💝</span></div></div>
+    <div class="gallery-item" onclick="openLightbox('11.jpeg')"><img src="11.jpeg" alt="Sapna photo 11" loading="lazy" /><div class="gallery-overlay"><span>🎂</span></div></div>
+  </div>
+</section>
+
+<!-- ========== LIGHTBOX ========== -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button id="lightbox-prev" onclick="event.stopPropagation();changeLightbox(-1)">‹</button>
+  <img id="lightbox-img" src="" alt="Full size photo" />
+  <button id="lightbox-next" onclick="event.stopPropagation();changeLightbox(1)">›</button>
+</div>
+
+<!-- ========== BIRTHDAY MESSAGE ========== -->
+<section id="message-section">
+  <div class="message-card">
+    <div class="message-icon">🌸</div>
+    <h2>हमारी प्यारी सपना को</h2>
+    <p>आपके <strong>45वें जन्मदिन</strong> पर, हम आपको यह बताना चाहते हैं कि आप कितनी खास हैं। आपकी दयालुता, आपकी ताकत, और आपकी खूबसूरत मुस्कान हर दिन को आपके आसपास के हर इंसान के लिए और भी उजला बना देती है।</p>
+    <p>आप बस एक साल बड़ी नहीं हुई हैं — आप एक साल और अद्भुत, एक साल और प्यारी, और एक साल और खास हो गई हैं। यह जन्मदिन आपके लिए है, आपके सपनों के लिए है, और उन सभी खूबसूरत पलों के लिए जो अभी आने बाकी हैं।</p>
+    <p class="message-sign">अनगिनत प्यार के साथ ❤️</p>
+  </div>
+</section>
+
+<!-- ========== GAMES SECTION ========== -->
+<section id="games-section">
+  <div class="section-header">
+    <h2>🎮 Birthday Games</h2>
+    <p>Play some fun games to celebrate!</p>
+  </div>
+  <div class="games-tabs">
+    <button class="game-tab active" id="tab-candy" onclick="switchGame('candy')">🍬 Candy Crush</button>
+    <button class="game-tab" id="tab-cat" onclick="switchGame('cat')">🐱 Find The Cat</button>
+  </div>
+
+  <!-- CANDY CRUSH GAME -->
+  <div id="game-candy" class="game-container active-game">
+    <div class="game-header">
+      <div class="game-stat"><span class="stat-label">Score</span><span class="stat-value" id="candy-score">0</span></div>
+      <div class="game-stat"><span class="stat-label">Moves</span><span class="stat-value" id="candy-moves">30</span></div>
+      <div class="game-stat"><span class="stat-label">Level</span><span class="stat-value" id="candy-level">1</span></div>
+    </div>
+    <div id="candy-target-info">🎯 Target: <span id="candy-target">500</span> pts</div>
+    <div id="candy-board-wrap">
+      <canvas id="candy-board" width="320" height="320"></canvas>
+    </div>
+    <div id="candy-msg" class="game-message"></div>
+    <button class="game-btn" onclick="initCandyGame()">🔄 New Game</button>
+  </div>
+
+  <!-- FIND THE CAT GAME -->
+  <div id="game-cat" class="game-container">
+    <div class="game-header">
+      <div class="game-stat"><span class="stat-label">Round</span><span class="stat-value" id="cat-round">1</span></div>
+      <div class="game-stat"><span class="stat-label">Score</span><span class="stat-value" id="cat-score">0</span></div>
+      <div class="game-stat" id="cat-timer-wrap"><span class="stat-label">Time</span><span class="stat-value" id="cat-timer">30</span></div>
+    </div>
+    <div id="cat-instruction">Tap the hidden cat in the doodle! 🐾</div>
+    <div id="cat-canvas-wrap">
+      <canvas id="cat-canvas" width="320" height="420"></canvas>
+      <div id="cat-found-anim" class="cat-found-hidden">🐱 Found it!</div>
+    </div>
+    <div id="cat-hint-bar">
+      <button id="cat-hint-btn" class="game-btn small" onclick="useCatHint()">💡 Hint</button>
+      <span id="cat-hints-left">3 hints left</span>
+    </div>
+    <div id="cat-msg" class="game-message"></div>
+    <button class="game-btn" onclick="initCatGame()">🔄 New Round</button>
+  </div>
+</section>
+
+<!-- ========== COUNTDOWN/WISHES ========== -->
+<section id="wishes-section">
+  <div class="section-header">
+    <h2>🕯️ Birthday Wishes</h2>
+    <p>Leave a wish for Sapna!</p>
+  </div>
+  <div id="wishes-list" class="wishes-list">
+    <div class="wish-bubble">🌸 May all your dreams come true this year!</div>
+    <div class="wish-bubble">🎂 45 looks absolutely gorgeous on you!</div>
+    <div class="wish-bubble">💕 Wishing you a day as wonderful as you are!</div>
+  </div>
+  <div class="wish-form">
+    <input type="text" id="wish-input" placeholder="Write your birthday wish... 💌" maxlength="120" />
+    <button onclick="addWish()" class="wish-submit-btn">Send 🎁</button>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer id="footer">
+  <div class="footer-hearts">
+    <span>❤️</span><span>🧡</span><span>💛</span><span>💚</span><span>💙</span><span>💜</span>
+  </div>
+  <p>Made with infinite love for</p>
+  <h3>Sapna 👑</h3>
+  <p class="footer-sub">Happy 45th Birthday! 🎉🎂🎈</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
